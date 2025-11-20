@@ -1,5 +1,9 @@
-# SISTEMA DE VENTAS BASICO
-SISTEMA de VENTAS BASICO desarrollado en PHP, MySQL, MVC, AJAX &amp; BULMA
+# SISTEMA DE VENTAS E INVENTARIO EN PHP y MYSQL MVC
+SISTEMA de VENTAS e INVENTARIO en PHP y MySQL, MVC y BULMA (POS - FACTURACION)
+
+# ▶️ CURSO COMPLETO EN YOUTUBE ▶️
+<p>Aprende a programar este sistema de ventas en PHP y MySQL MVC</p>
+<a href="https://www.youtube.com/playlist?list=PLH_tVOsiVGzmLcoS0q9op-lqRjrKrQiPn" target="_blank">Ver curso en YouTube</a>
 
 # ▶️ INSTALACIÓN
 <p>1 - Copie o mueva la carpeta VENTAS a su servidor local o remoto</p>
