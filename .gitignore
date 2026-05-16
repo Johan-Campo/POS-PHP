@@ -1,0 +1,59 @@
+# ─── Credenciales y configuración local ───────────────────────────────────────
+config/server.php
+
+# ─── Archivos subidos por usuarios (runtime) ──────────────────────────────────
+# Fotos de perfil de usuarios
+app/views/fotos/*
+!app/views/fotos/default.svg
+!app/views/fotos/.gitkeep
+
+# Fotos de productos
+app/views/productos/*
+!app/views/productos/default.svg
+!app/views/productos/.gitkeep
+
+# ─── Vendor / librerías de terceros (CSS y JS locales) ────────────────────────
+app/views/css/bulma.min.css
+app/views/css/all.css
+app/views/css/sweetalert2.min.css
+app/views/js/sweetalert2.all.min.js
+
+# Fuentes de Font Awesome (ya no se usan, pero por si quedaron)
+app/views/webfonts/
+
+# ─── Logs y archivos temporales de PHP/Apache ─────────────────────────────────
+*.log
+*.cache
+*.tmp
+error_log
+php_errorlog
+
+# ─── Sistema operativo ────────────────────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ─── IDEs y editores ──────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+.env.local
+
+# ─── PHP ──────────────────────────────────────────────────────────────────────
+*.phar
+/vendor/
+composer.lock

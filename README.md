@@ -4,6 +4,15 @@ MiniVend es un sistema web de Punto de Venta (POS) y gestión de inventario cons
 
 ---
 
+## Capturas de pantalla
+
+| | |
+|---|---|
+| ![Login](screenshots/login.png) <br> **Login** — Pantalla de inicio de sesión con fondo degradado y efecto glassmorphism. | ![Dashboard](screenshots/dashboard.png) <br> **Dashboard** — Panel principal con estadísticas en tiempo real y gráficas de ventas. |
+| ![Productos](screenshots/products.png) <br> **Productos** — Lista de inventario con imagen, precio, stock y categoría por producto. | ![Categorías](screenshots/categories.png) <br> **Categorías** — Gestión de categorías con tabla, ubicación en bodega y acciones rápidas. |
+
+---
+
 ## El problema que resuelve
 
 Muchos negocios pequeños — tiendas de abarrotes, tiendas de conveniencia, pequeños almacenes — todavía administran sus ventas e inventario mediante cuadernos en papel, hojas de cálculo o software de escritorio desactualizado. Estos métodos comparten un conjunto de problemas críticos que afectan directamente la rentabilidad y la seguridad del negocio:
@@ -189,7 +198,7 @@ Este proyecto es de código abierto y está disponible bajo la [Licencia MIT](LI
 
 **Johan Alejandro Campo Pabón**
 
-Desarrollador Full-Stack con enfoque en Backend. Ingeniería Electrónica — Universidad del Magdalena, Colombia.
+Desarrollador de Software con enfoque en Backend. Ingeniería Electrónica — Universidad del Magdalena, Colombia.
 
 Más de 1 año de experiencia construyendo aplicaciones web y soluciones empresariales con **.NET, Node.js y PHP**, diseñando APIs REST y lógica de negocio sobre bases de datos SQL y NoSQL.
 
@@ -197,7 +206,6 @@ Más de 1 año de experiencia construyendo aplicaciones web y soluciones empresa
 Backend      →  C# · .NET · ASP.NET Core · Node.js · PHP
 Bases de datos → SQL Server · MySQL · MongoDB · EF Core · Prisma ORM
 Frontend     →  React · Next.js · TypeScript · Tailwind CSS
-Actualmente  →  A13 Agency (Santa Marta) — Mesero IA
 ```
 
 | Contacto | Enlace |
