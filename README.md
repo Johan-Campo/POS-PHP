@@ -189,7 +189,7 @@ Este proyecto es de código abierto y está disponible bajo la [Licencia MIT](LI
 
 **Johan Alejandro Campo Pabón**
 
-Desarrollador Full-Stack con enfoque en Backend. Ingeniería Electrónica — Universidad del Magdalena, Colombia.
+Desarrollador de Software con enfoque en Backend. Ingeniería Electrónica — Universidad del Magdalena, Colombia.
 
 Más de 1 año de experiencia construyendo aplicaciones web y soluciones empresariales con **.NET, Node.js y PHP**, diseñando APIs REST y lógica de negocio sobre bases de datos SQL y NoSQL.
 
@@ -197,7 +197,6 @@ Más de 1 año de experiencia construyendo aplicaciones web y soluciones empresa
 Backend      →  C# · .NET · ASP.NET Core · Node.js · PHP
 Bases de datos → SQL Server · MySQL · MongoDB · EF Core · Prisma ORM
 Frontend     →  React · Next.js · TypeScript · Tailwind CSS
-Actualmente  →  A13 Agency (Santa Marta) — Mesero IA
 ```
 
 | Contacto | Enlace |
