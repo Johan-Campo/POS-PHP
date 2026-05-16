@@ -1,9 +1,15 @@
-<div class="container is-fluid mb-6">
-	<h1 class="title">Clientes</h1>
-	<h2 class="subtitle"><i class="fas fa-sync-alt"></i> &nbsp; Actualizar cliente</h2>
-</div>
+<div class="content-wrapper">
 
-<div class="container pb-6 pt-6">
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Clientes</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-refresh-line"></i></div>
+            Actualizar cliente
+        </div>
+    </div>
+</div>
+<div>
 	<?php
 	
 		include "./app/views/inc/btn_back.php";
@@ -92,7 +98,7 @@
 		  	</div>
 		</div>
 		<p class="has-text-centered">
-			<button type="submit" class="button is-success is-rounded"><i class="fas fa-sync-alt"></i> &nbsp; Actualizar</button>
+			<button type="submit" class="button is-success is-rounded"><i class="ri-refresh-line"></i> &nbsp; Actualizar</button>
 		</p>
 		<p class="has-text-centered pt-6">
             <small>Los campos marcados con <?php echo CAMPO_OBLIGATORIO; ?> son obligatorios</small>
@@ -103,4 +109,5 @@
 			include "./app/views/inc/error_alert.php";
 		}
 	?>
+</div>
 </div>

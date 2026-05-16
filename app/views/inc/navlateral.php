@@ -1,388 +1,237 @@
-<section class="full-width navLateral scroll" id="navLateral">
-	<div class="full-width navLateral-body">
-		<div class="full-width navLateral-body-logo has-text-centered tittles is-uppercase">
-			Sistema de ventas 
-		</div>
-		<figure class="full-width" style="height: 77px;">
-			<div class="navLateral-body-cl">
-				<?php
-                    if(is_file("./app/views/fotos/".$_SESSION['foto'])){
-                        echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto'].'">';
-                    }else{
-                        echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/default.png">';
-                    }
-                ?>
-			</div>
-			<figcaption class="navLateral-body-cr">
-				<span>
-					<?php echo $_SESSION['nombre']; ?><br>
-					<small><?php echo $_SESSION['usuario']; ?></small>
-				</span>
-			</figcaption>
-		</figure>
-		<div class="full-width tittles navLateral-body-tittle-menu has-text-centered is-uppercase">
-			<i class="fas fa-th-large fa-fw"></i> &nbsp; <?php echo APP_NAME; ?>
-		</div>
-		<nav class="full-width">
-			<ul class="full-width list-unstyle menu-principal">
+<section class="navLateral scroll" id="navLateral">
 
-				<li class="full-width">
-					<a href="<?php echo APP_URL; ?>dashboard/" class="full-width">
-						<div class="navLateral-body-cl">
-							<i class="fab fa-dashcube fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							Inicio
-						</div>
-					</a>
-				</li>
+    <a href="<?php echo APP_URL; ?>dashboard/" class="sidebar-brand">
+        <img src="<?php echo APP_URL; ?>app/views/img/logo.svg" width="36" height="36" alt="Logo" style="border-radius:9px;flex-shrink:0;">
+        <span class="sidebar-brand-name"><?php echo APP_NAME; ?></span>
+    </a>
 
-				<li class="full-width divider-menu-h"></li>
+    <div class="sidebar-profile">
+        <?php
+            if(is_file("./app/views/fotos/".$_SESSION['foto'])){
+                echo '<img class="sidebar-profile-img" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto'].'" alt="foto">';
+            }else{
+                echo '<img class="sidebar-profile-img" src="'.APP_URL.'app/views/fotos/default.svg" alt="foto">';
+            }
+        ?>
+        <div class="sidebar-profile-info">
+            <div class="sidebar-profile-name"><?php echo $_SESSION['nombre']." ".$_SESSION['apellido']; ?></div>
+            <div class="sidebar-profile-user"><?php echo $_SESSION['usuario']; ?></div>
+        </div>
+    </div>
 
-				<li class="full-width">
-					<a href="#" class="full-width btn-subMenu">
-						<div class="navLateral-body-cl">
-							<i class="fas fa-cash-register fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							CAJAS
-						</div>
-						<span class="fas fa-chevron-down"></span>
-					</a>
-					<ul class="full-width menu-principal sub-menu-options">
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>cashierNew/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-cash-register fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Nueva caja
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>cashierList/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-clipboard-list fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Lista de cajas
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>cashierSearch/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-search fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Buscar caja
-								</div>
-							</a>
-						</li>
-					</ul>
-				</li>
+    <nav>
+        <div class="sidebar-section-title">Principal</div>
+        <ul class="menu-principal list-unstyle">
 
-				<li class="full-width divider-menu-h"></li>
+            <li>
+                <a href="<?php echo APP_URL; ?>dashboard/">
+                    <i class="ri-dashboard-line menu-icon"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
 
-				<li class="full-width">
-					<a href="#" class="full-width btn-subMenu">
-						<div class="navLateral-body-cl">
-							<i class="fas fa-users fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							USUARIOS
-						</div>
-						<span class="fas fa-chevron-down"></span>
-					</a>
-					<ul class="full-width menu-principal sub-menu-options">
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>userNew/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-cash-register fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Nuevo usuario
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>userList/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-clipboard-list fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Lista de usuarios
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>userSearch/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-search fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Buscar usuario
-								</div>
-							</a>
-						</li>
-					</ul>
-				</li>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-title">Gestión</div>
 
-				<li class="full-width divider-menu-h"></li>
+            <li>
+                <a href="#" class="btn-subMenu">
+                    <i class="ri-bank-card-line menu-icon"></i>
+                    <span>Cajas</span>
+                    <i class="ri-arrow-down-s-line menu-arrow"></i>
+                </a>
+                <ul class="menu-principal sub-menu-options list-unstyle">
+                    <li>
+                        <a href="<?php echo APP_URL; ?>cashierNew/">
+                            <i class="ri-add-circle-line menu-icon"></i> Nueva caja
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>cashierList/">
+                            <i class="ri-list-check menu-icon"></i> Lista de cajas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>cashierSearch/">
+                            <i class="ri-search-line menu-icon"></i> Buscar caja
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-				<li class="full-width">
-					<a href="#" class="full-width btn-subMenu">
-						<div class="navLateral-body-cl">
-							<i class="fas fa-address-book fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							CLIENTES
-						</div>
-						<span class="fas fa-chevron-down"></span>
-					</a>
-					<ul class="full-width menu-principal sub-menu-options">
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>clientNew/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-male fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Nuevo cliente
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>clientList/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-clipboard-list fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Lista de clientes
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>clientSearch/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-search fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Buscar cliente
-								</div>
-							</a>
-						</li>
-					</ul>
-				</li>
+            <li>
+                <a href="#" class="btn-subMenu">
+                    <i class="ri-team-line menu-icon"></i>
+                    <span>Usuarios</span>
+                    <i class="ri-arrow-down-s-line menu-arrow"></i>
+                </a>
+                <ul class="menu-principal sub-menu-options list-unstyle">
+                    <li>
+                        <a href="<?php echo APP_URL; ?>userNew/">
+                            <i class="ri-user-add-line menu-icon"></i> Nuevo usuario
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>userList/">
+                            <i class="ri-list-check menu-icon"></i> Lista de usuarios
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>userSearch/">
+                            <i class="ri-search-line menu-icon"></i> Buscar usuario
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-				<li class="full-width divider-menu-h"></li>
+            <li>
+                <a href="#" class="btn-subMenu">
+                    <i class="ri-contacts-line menu-icon"></i>
+                    <span>Clientes</span>
+                    <i class="ri-arrow-down-s-line menu-arrow"></i>
+                </a>
+                <ul class="menu-principal sub-menu-options list-unstyle">
+                    <li>
+                        <a href="<?php echo APP_URL; ?>clientNew/">
+                            <i class="ri-user-add-line menu-icon"></i> Nuevo cliente
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>clientList/">
+                            <i class="ri-list-check menu-icon"></i> Lista de clientes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>clientSearch/">
+                            <i class="ri-search-line menu-icon"></i> Buscar cliente
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-				<li class="full-width">
-					<a href="#" class="full-width btn-subMenu">
-						<div class="navLateral-body-cl">
-							<i class="fas fa-tags fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							CATEGORIAS
-						</div>
-						<span class="fas fa-chevron-down"></span>
-					</a>
-					<ul class="full-width menu-principal sub-menu-options">
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>categoryNew/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-tag fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Nueva categoría
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>categoryList/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-clipboard-list fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Lista de categorías
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>categorySearch/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-search fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Buscar categoría
-								</div>
-							</a>
-						</li>
-					</ul>
-				</li>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-title">Inventario</div>
 
-				<li class="full-width divider-menu-h"></li>
+            <li>
+                <a href="#" class="btn-subMenu">
+                    <i class="ri-price-tag-3-line menu-icon"></i>
+                    <span>Categorías</span>
+                    <i class="ri-arrow-down-s-line menu-arrow"></i>
+                </a>
+                <ul class="menu-principal sub-menu-options list-unstyle">
+                    <li>
+                        <a href="<?php echo APP_URL; ?>categoryNew/">
+                            <i class="ri-add-circle-line menu-icon"></i> Nueva categoría
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>categoryList/">
+                            <i class="ri-list-check menu-icon"></i> Lista de categorías
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>categorySearch/">
+                            <i class="ri-search-line menu-icon"></i> Buscar categoría
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-				<li class="full-width">
-					<a href="#" class="full-width btn-subMenu">
-						<div class="navLateral-body-cl">
-							<i class="fas fa-cubes fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							PRODUCTOS
-						</div>
-						<span class="fas fa-chevron-down"></span>
-					</a>
-					<ul class="full-width menu-principal sub-menu-options">
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>productNew/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-box fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Nuevo producto
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>productList/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-clipboard-list fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Lista de productos
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>productCategory/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-boxes fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Productos por categoría
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>productSearch/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-search fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Buscar producto
-								</div>
-							</a>
-						</li>
-					</ul>
-				</li>
+            <li>
+                <a href="#" class="btn-subMenu">
+                    <i class="ri-box-3-line menu-icon"></i>
+                    <span>Productos</span>
+                    <i class="ri-arrow-down-s-line menu-arrow"></i>
+                </a>
+                <ul class="menu-principal sub-menu-options list-unstyle">
+                    <li>
+                        <a href="<?php echo APP_URL; ?>productNew/">
+                            <i class="ri-add-circle-line menu-icon"></i> Nuevo producto
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>productList/">
+                            <i class="ri-list-check menu-icon"></i> Lista de productos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>productCategory/">
+                            <i class="ri-inbox-line menu-icon"></i> Por categoría
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>productSearch/">
+                            <i class="ri-search-line menu-icon"></i> Buscar producto
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-				<li class="full-width divider-menu-h"></li>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-title">Ventas</div>
 
-				<li class="full-width">
-					<a href="#" class="full-width btn-subMenu">
-						<div class="navLateral-body-cl">
-							<i class="fas fa-shopping-cart fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							VENTAS
-						</div>
-						<span class="fas fa-chevron-down"></span>
-					</a>
-					<ul class="full-width menu-principal sub-menu-options">
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>saleNew/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-cart-plus fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Nueva venta
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>saleList/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-clipboard-list fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Lista de ventas
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>saleSearch/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-search-dollar fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Buscar venta
-								</div>
-							</a>
-						</li>
-					</ul>
-				</li>
+            <li>
+                <a href="#" class="btn-subMenu">
+                    <i class="ri-shopping-cart-line menu-icon"></i>
+                    <span>Ventas</span>
+                    <i class="ri-arrow-down-s-line menu-arrow"></i>
+                </a>
+                <ul class="menu-principal sub-menu-options list-unstyle">
+                    <li>
+                        <a href="<?php echo APP_URL; ?>saleNew/">
+                            <i class="ri-shopping-cart-2-line menu-icon"></i> Nueva venta
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>saleList/">
+                            <i class="ri-list-check menu-icon"></i> Lista de ventas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL; ?>saleSearch/">
+                            <i class="ri-search-line menu-icon"></i> Buscar venta
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-				<li class="full-width divider-menu-h"></li>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-title">Cuenta</div>
 
-				<li class="full-width">
-					<a href="#" class="full-width btn-subMenu">
-						<div class="navLateral-body-cl">
-							<i class="fas fa-cogs fa-fw"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							CONFIGURACIONES
-						</div>
-						<span class="fas fa-chevron-down"></span>
-					</a>
-					<ul class="full-width menu-principal sub-menu-options">
-						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>companyNew/" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-store-alt fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Datos de empresa
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL."userUpdate/".$_SESSION['id']."/"; ?>" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-user-tie fa-fw"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Mi cuenta
-								</div>
-							</a>
-						</li>
-						<li class="full-width">
-							<a href="<?php echo APP_URL."userPhoto/".$_SESSION['id']."/"; ?>" class="full-width">
-								<div class="navLateral-body-cl">
-									<i class="fas fa-camera"></i>
-								</div>
-								<div class="navLateral-body-cr">
-									Mi foto
-								</div>
-							</a>
-						</li>
-					</ul>
-				</li>
+            <li>
+                <a href="#" class="btn-subMenu">
+                    <i class="ri-settings-3-line menu-icon"></i>
+                    <span>Configuración</span>
+                    <i class="ri-arrow-down-s-line menu-arrow"></i>
+                </a>
+                <ul class="menu-principal sub-menu-options list-unstyle">
+                    <li>
+                        <a href="<?php echo APP_URL; ?>companyNew/">
+                            <i class="ri-building-2-line menu-icon"></i> Datos de empresa
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL."userUpdate/".$_SESSION['id']."/"; ?>">
+                            <i class="ri-user-settings-line menu-icon"></i> Mi cuenta
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo APP_URL."userPhoto/".$_SESSION['id']."/"; ?>">
+                            <i class="ri-camera-line menu-icon"></i> Mi foto
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-				<li class="full-width divider-menu-h"></li>
+            <div class="sidebar-divider"></div>
 
-				<li class="full-width mt-5">
-					<a href="<?php echo APP_URL."logOut/"; ?>" class="full-width btn-exit" >
-						<div class="navLateral-body-cl">
-							<i class="fas fa-power-off"></i>
-						</div>
-						<div class="navLateral-body-cr">
-							Cerrar sesión
-						</div>
-					</a>
-				</li>
+            <li>
+                <a href="<?php echo APP_URL."logOut/"; ?>" class="btn-exit">
+                    <i class="ri-logout-circle-r-line menu-icon"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </li>
 
-			</ul>
-		</nav>
-	</div>
+        </ul>
+    </nav>
+
 </section>

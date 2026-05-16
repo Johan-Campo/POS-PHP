@@ -5,13 +5,13 @@
 
 	class saleController extends mainModel{
 
-		/*---------- Controlador buscar codigo de producto ----------*/
+		
         public function buscarCodigoVentaControlador(){
 
-            /*== Recuperando codigo de busqueda ==*/
+            
 			$producto=$this->limpiarCadena($_POST['buscar_codigo']);
 
-			/*== Comprobando que no este vacio el campo ==*/
+			
 			if($producto==""){
 				return '
 				<article class="message is-warning mt-4 mb-4">
@@ -19,14 +19,14 @@
 					    <p>¡Ocurrio un error inesperado!</p>
 					 </div>
 				    <div class="message-body has-text-centered">
-				    	<i class="fas fa-exclamation-triangle fa-2x"></i><br>
+				    	<i class="ri-alert-line"></i><br>
 						Debes de introducir el Nombre, Marca o Modelo del producto
 				    </div>
 				</article>';
 				exit();
             }
 
-            /*== Seleccionando productos en la DB ==*/
+            
             $datos_productos=$this->ejecutarConsulta("SELECT * FROM producto WHERE (producto_nombre LIKE '%$producto%' OR producto_marca LIKE '%$producto%' OR producto_modelo LIKE '%$producto%') ORDER BY producto_nombre ASC");
 
             if($datos_productos->rowCount()>=1){
@@ -38,9 +38,9 @@
 				foreach($datos_productos as $rows){
 					$tabla.='
 					<tr class="has-text-left" >
-                        <td><i class="fas fa-box fa-fw"></i> &nbsp; '.$rows['producto_nombre'].'</td>
+                        <td><i class="ri-box-line"></i> &nbsp; '.$rows['producto_nombre'].'</td>
                         <td class="has-text-centered">
-                            <button type="button" class="button is-link is-rounded is-small" onclick="agregar_codigo(\''.$rows['producto_codigo'].'\')"><i class="fas fa-plus-circle"></i></button>
+                            <button type="button" class="button is-link is-rounded is-small" onclick="agregar_codigo(\''.$rows['producto_codigo'].'\')"><i class="ri-add-circle-line"></i></button>
                         </td>
                     </tr>
                     ';
@@ -54,7 +54,7 @@
 					    <p>¡Ocurrio un error inesperado!</p>
 					 </div>
 				    <div class="message-body has-text-centered">
-				    	<i class="fas fa-exclamation-triangle fa-2x"></i><br>
+				    	<i class="ri-alert-line"></i><br>
 						No hemos encontrado ningún producto en el sistema que coincida con <strong>“'.$producto.'”
 				    </div>
 				</article>';
@@ -64,10 +64,10 @@
         }
 
 
-        /*---------- Controlador agregar producto a venta ----------*/
+        
         public function agregarProductoCarritoControlador(){
 
-            /*== Recuperando codigo del producto ==*/
+            
             $codigo=$this->limpiarCadena($_POST['producto_codigo']);
 
             if($codigo==""){
@@ -81,7 +81,7 @@
 		        exit();
             }
 
-            /*== Verificando integridad de los datos ==*/
+            
             if($this->verificarDatos("[a-zA-Z0-9- ]{1,70}",$codigo)){
                 $alerta=[
 					"tipo"=>"simple",
@@ -93,7 +93,7 @@
 		        exit();
             }
 
-            /*== Comprobando producto en la DB ==*/
+            
             $check_producto=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_codigo='$codigo'");
             if($check_producto->rowCount()<=0){
                 $alerta=[
@@ -108,7 +108,7 @@
                 $campos=$check_producto->fetch();
             }
 
-            /*== Codigo de producto ==*/
+            
             $codigo=$campos['producto_codigo'];
 
             if(empty($_SESSION['datos_producto_venta'][$codigo])){
@@ -187,10 +187,10 @@
         }
 
 
-        /*---------- Controlador remover producto de venta ----------*/
+        
         public function removerProductoCarritoControlador(){
 
-            /*== Recuperando codigo del producto ==*/
+            
             $codigo=$this->limpiarCadena($_POST['producto_codigo']);
 
             unset($_SESSION['datos_producto_venta'][$codigo]);
@@ -215,14 +215,14 @@
         }
 
 
-        /*---------- Controlador actualizar producto de venta ----------*/
+        
         public function actualizarProductoCarritoControlador(){
 
-            /*== Recuperando codigo & cantidad del producto ==*/
+            
             $codigo=$this->limpiarCadena($_POST['producto_codigo']);
             $cantidad=$this->limpiarCadena($_POST['producto_cantidad']);
 
-            /*== comprobando campos vacios ==*/
+            
             if($codigo=="" || $cantidad==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -234,7 +234,7 @@
 		        exit();
             }
 
-            /*== comprobando cantidad de productos ==*/
+            
             if($cantidad<=0){
                 $alerta=[
 					"tipo"=>"simple",
@@ -246,7 +246,7 @@
 		        exit();
             }
 
-            /*== Comprobando producto en la DB ==*/
+            
             $check_producto=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_codigo='$codigo'");
             if($check_producto->rowCount()<=0){
                 $alerta=[
@@ -261,7 +261,7 @@
                 $campos=$check_producto->fetch();
             }
 
-            /*== comprobando producto en carrito ==*/
+            
             if(!empty($_SESSION['datos_producto_venta'][$codigo])){
 
                 if($_SESSION['datos_producto_venta'][$codigo]["venta_detalle_cantidad"]==$cantidad){
@@ -332,13 +332,13 @@
         }
 
 
-        /*---------- Controlador buscar cliente ----------*/
+        
         public function buscarClienteVentaControlador(){
 
-            /*== Recuperando termino de busqueda ==*/
+            
 			$cliente=$this->limpiarCadena($_POST['buscar_cliente']);
 
-			/*== Comprobando que no este vacio el campo ==*/
+			
 			if($cliente==""){
 				return '
 				<article class="message is-warning mt-4 mb-4">
@@ -346,14 +346,14 @@
 					    <p>¡Ocurrio un error inesperado!</p>
 					 </div>
 				    <div class="message-body has-text-centered">
-				    	<i class="fas fa-exclamation-triangle fa-2x"></i><br>
+				    	<i class="ri-alert-line"></i><br>
 						Debes de introducir el Numero de documento, Nombre, Apellido o Teléfono del cliente
 				    </div>
 				</article>';
 				exit();
             }
 
-            /*== Seleccionando clientes en la DB ==*/
+            
             $datos_cliente=$this->ejecutarConsulta("SELECT * FROM cliente WHERE (cliente_id!='1') AND (cliente_numero_documento LIKE '%$cliente%' OR cliente_nombre LIKE '%$cliente%' OR cliente_apellido LIKE '%$cliente%' OR cliente_telefono LIKE '%$cliente%') ORDER BY cliente_nombre ASC");
 
             if($datos_cliente->rowCount()>=1){
@@ -365,9 +365,9 @@
 				foreach($datos_cliente as $rows){
 					$tabla.='
 					<tr>
-                        <td class="has-text-left" ><i class="fas fa-male fa-fw"></i> &nbsp; '.$rows['cliente_nombre'].' '.$rows['cliente_apellido'].' ('.$rows['cliente_tipo_documento'].': '.$rows['cliente_numero_documento'].')</td>
+                        <td class="has-text-left" ><i class="ri-user-line"></i> &nbsp; '.$rows['cliente_nombre'].' '.$rows['cliente_apellido'].' ('.$rows['cliente_tipo_documento'].': '.$rows['cliente_numero_documento'].')</td>
                         <td class="has-text-centered" >
-                            <button type="button" class="button is-link is-rounded is-small" onclick="agregar_cliente('.$rows['cliente_id'].')"><i class="fas fa-user-plus"></i></button>
+                            <button type="button" class="button is-link is-rounded is-small" onclick="agregar_cliente('.$rows['cliente_id'].')"><i class="ri-user-add-line"></i></button>
                         </td>
                     </tr>
                     ';
@@ -382,7 +382,7 @@
 					    <p>¡Ocurrio un error inesperado!</p>
 					 </div>
 				    <div class="message-body has-text-centered">
-				    	<i class="fas fa-exclamation-triangle fa-2x"></i><br>
+				    	<i class="ri-alert-line"></i><br>
 						No hemos encontrado ningún cliente en el sistema que coincida con <strong>“'.$cliente.'”</strong>
 				    </div>
 				</article>';
@@ -391,13 +391,13 @@
         }
 
 
-        /*---------- Controlador agregar cliente ----------*/
+        
         public function agregarClienteVentaControlador(){
 
-            /*== Recuperando id del cliente ==*/
+            
 			$id=$this->limpiarCadena($_POST['cliente_id']);
 
-			/*== Comprobando cliente en la DB ==*/
+			
 			$check_cliente=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
 			if($check_cliente->rowCount()<=0){
 				$alerta=[
@@ -439,7 +439,7 @@
         }
 
 
-        /*---------- Controlador remover cliente ----------*/
+        
         public function removerClienteVentaControlador(){
 
 			unset($_SESSION['datos_cliente_venta']);
@@ -463,13 +463,13 @@
         }
 
 
-        /*---------- Controlador registrar venta ----------*/
+        
         public function registrarVentaControlador(){
 
             $caja=$this->limpiarCadena($_POST['venta_caja']);
             $venta_pagado=$this->limpiarCadena($_POST['venta_abono']);
 
-            /*== Comprobando integridad de los datos ==*/
+            
             if($this->verificarDatos("[0-9.]{1,25}",$venta_pagado)){
 				$alerta=[
 					"tipo"=>"simple",
@@ -504,7 +504,7 @@
             }
 
 
-            /*== Comprobando cliente en la DB ==*/
+            
 			$check_cliente=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_id='".$_SESSION['datos_cliente_venta']['cliente_id']."'");
 			if($check_cliente->rowCount()<=0){
 				$alerta=[
@@ -518,7 +518,7 @@
             }
 
 
-            /*== Comprobando caja en la DB ==*/
+            
             $check_caja=$this->ejecutarConsulta("SELECT * FROM caja WHERE caja_id='$caja'");
 			if($check_caja->rowCount()<=0){
 				$alerta=[
@@ -534,7 +534,7 @@
             }
 
 
-            /*== Formateando variables ==*/
+            
             $venta_pagado=number_format($venta_pagado,MONEDA_DECIMALES,'.','');
             $venta_total=number_format($_SESSION['venta_total'],MONEDA_DECIMALES,'.','');
 
@@ -545,7 +545,7 @@
             $venta_total_final=number_format($venta_total_final,MONEDA_DECIMALES,'.','');
 
 
-            /*== Calculando el cambio ==*/
+            
             if($venta_pagado<$venta_total_final){
                 $alerta=[
 					"tipo"=>"simple",
@@ -561,7 +561,7 @@
             $venta_cambio=number_format($venta_cambio,MONEDA_DECIMALES,'.','');
 
 
-            /*== Calculando total en caja ==*/
+            
             $movimiento_cantidad=$venta_pagado-$venta_cambio;
             $movimiento_cantidad=number_format($movimiento_cantidad,MONEDA_DECIMALES,'.','');
 
@@ -569,11 +569,11 @@
             $total_caja=number_format($total_caja,MONEDA_DECIMALES,'.','');
 
 
-            /*== Actualizando productos ==*/
+            
             $errores_productos=0;
 			foreach($_SESSION['datos_producto_venta'] as $productos){
 
-                /*== Obteniendo datos del producto ==*/
+                
                 $check_producto=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='".$productos['producto_id']."' AND producto_codigo='".$productos['producto_codigo']."'");
                 if($check_producto->rowCount()<1){
                     $errores_productos=1;
@@ -582,12 +582,12 @@
                     $datos_producto=$check_producto->fetch();
                 }
 
-                /*== Respaldando datos de BD para poder restaurar en caso de errores ==*/
+                
                 $_SESSION['datos_producto_venta'][$productos['producto_codigo']]['producto_stock_total']=$datos_producto['producto_stock_total']-$_SESSION['datos_producto_venta'][$productos['producto_codigo']]['venta_detalle_cantidad'];
 
                 $_SESSION['datos_producto_venta'][$productos['producto_codigo']]['producto_stock_total_old']=$datos_producto['producto_stock_total'];
 
-                /*== Preparando datos para enviarlos al modelo ==*/
+                
                 $datos_producto_up=[
                     [
 						"campo_nombre"=>"producto_stock_total",
@@ -602,14 +602,14 @@
                     "condicion_valor"=>$productos['producto_id']
                 ];
 
-                /*== Actualizando producto ==*/
+                
                 if(!$this->actualizarDatos("producto",$datos_producto_up,$condicion)){
                     $errores_productos=1;
                     break;
                 }
             }
 
-            /*== Reestableciendo DB debido a errores ==*/
+            
             if($errores_productos==1){
 
                 foreach($_SESSION['datos_producto_venta'] as $producto){
@@ -641,12 +641,12 @@
 		        exit();
             }
 
-            /*== generando codigo de venta ==*/
+            
             $correlativo=$this->ejecutarConsulta("SELECT venta_id FROM venta");
 			$correlativo=($correlativo->rowCount())+1;
             $codigo_venta=$this->generarCodigoAleatorio(10,$correlativo);
 
-            /*== Preparando datos para enviarlos al modelo ==*/
+            
 			$datos_venta_reg=[
 				[
 					"campo_nombre"=>"venta_codigo",
@@ -695,7 +695,7 @@
 				]
             ];
 
-            /*== Agregando venta ==*/
+            
             $agregar_venta=$this->guardarDatos("venta",$datos_venta_reg);
 
             if($agregar_venta->rowCount()!=1){
@@ -728,11 +728,11 @@
 		        exit();
             }
 
-            /*== Agregando detalles de la venta ==*/
+            
             $errores_venta_detalle=0;
             foreach($_SESSION['datos_producto_venta'] as $venta_detalle){
 
-                /*== Preparando datos para enviarlos al modelo ==*/
+                
                 $datos_venta_detalle_reg=[
                 	[
 						"campo_nombre"=>"venta_detalle_cantidad",
@@ -779,7 +779,7 @@
                 }
             }
 
-            /*== Reestableciendo DB debido a errores ==*/
+            
             if($errores_venta_detalle==1){
 
                 $this->eliminarRegistro("venta_detalle","venta_codigo",$codigo_venta);
@@ -814,7 +814,7 @@
 		        exit();
             }
 
-            /*== Actualizando efectivo en caja ==*/
+            
             $datos_caja_up=[
                 [
 					"campo_nombre"=>"caja_efectivo",
@@ -864,7 +864,7 @@
 
             }
 
-            /*== Vaciando variables de sesion ==*/
+            
             unset($_SESSION['venta_total']);
             unset($_SESSION['datos_cliente_venta']);
             unset($_SESSION['datos_producto_venta']);
@@ -882,7 +882,7 @@
         }
 
 
-        /*----------  Controlador listar venta  ----------*/
+        
 		public function listarVentaControlador($pagina,$registros,$url,$busqueda){
 
 			$pagina=$this->limpiarCadena($pagina);
@@ -953,15 +953,15 @@
 			                <td>
 
 			                	<button type="button" class="button is-link is-outlined is-rounded is-small btn-sale-options" onclick="print_invoice(\''.APP_URL.'app/pdf/invoice.php?code='.$rows['venta_codigo'].'\')" title="Imprimir factura Nro. '.$rows['venta_id'].'" >
-	                                <i class="fas fa-file-invoice-dollar fa-fw"></i>
+	                                <i class="ri-file-list-3-line"></i>
 	                            </button>
 
                                 <button type="button" class="button is-link is-outlined is-rounded is-small btn-sale-options" onclick="print_ticket(\''.APP_URL.'app/pdf/ticket.php?code='.$rows['venta_codigo'].'\')" title="Imprimir ticket Nro. '.$rows['venta_id'].'" >
-                                    <i class="fas fa-receipt fa-fw"></i>
+                                    <i class="ri-receipt-line"></i>
                                 </button>
 
 			                    <a href="'.APP_URL.'saleDetail/'.$rows['venta_codigo'].'/" class="button is-link is-rounded is-small" title="Informacion de venta Nro. '.$rows['venta_id'].'" >
-			                    	<i class="fas fa-shopping-bag fa-fw"></i>
+			                    	<i class="ri-shopping-bag-line"></i>
 			                    </a>
 
 			                	<form class="FormularioAjax is-inline-block" action="'.APP_URL.'app/ajax/ventaAjax.php" method="POST" autocomplete="off" >
@@ -970,7 +970,7 @@
 			                		<input type="hidden" name="venta_id" value="'.$rows['venta_id'].'">
 
 			                    	<button type="submit" class="button is-danger is-rounded is-small" title="Eliminar venta Nro. '.$rows['venta_id'].'" >
-			                    		<i class="far fa-trash-alt fa-fw"></i>
+			                    		<i class="ri-delete-bin-line"></i>
 			                    	</button>
 			                    </form>
 
@@ -1004,7 +1004,7 @@
 
 			$tabla.='</tbody></table></div>';
 
-			### Paginacion ###
+			
 			if($total>0 && $pagina<=$numeroPaginas){
 				$tabla.='<p class="has-text-right">Mostrando ventas <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>';
 
@@ -1015,12 +1015,12 @@
 		}
 
 
-		/*----------  Controlador eliminar venta  ----------*/
+		
 		public function eliminarVentaControlador(){
 
 			$id=$this->limpiarCadena($_POST['venta_id']);
 
-			# Verificando venta #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM venta WHERE venta_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -1035,7 +1035,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Verificando detalles de venta #
+		    
 		    $check_detalle_venta=$this->ejecutarConsulta("SELECT venta_detalle_id FROM venta_detalle WHERE venta_codigo='".$datos['venta_codigo']."'");
 		    $check_detalle_venta=$check_detalle_venta->rowCount();
 

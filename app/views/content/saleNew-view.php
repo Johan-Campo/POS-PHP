@@ -1,9 +1,15 @@
-<div class="container is-fluid mb-6">
-	<h1 class="title">Ventas</h1>
-	<h2 class="subtitle"><i class="fas fa-cart-plus fa-fw"></i> &nbsp; Nueva venta</h2>
-</div>
+<div class="content-wrapper">
 
-<div class="container pb-6 pt-6">
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Ventas</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-shopping-cart-2-line"></i></div>
+            Nueva venta
+        </div>
+    </div>
+</div>
+<div>
     <?php
         $check_empresa=$insLogin->seleccionarDatos("Normal","empresa LIMIT 1","*",0);
 
@@ -15,12 +21,12 @@
         <div class="column pb-6">
 
             <p class="has-text-centered pt-6 pb-6">
-                <small>Para agregar productos debe de digitar el código de barras en el campo "Código de producto" y luego presionar &nbsp; <strong class="is-uppercase" ><i class="far fa-check-circle"></i> &nbsp; Agregar producto</strong>. También puede agregar el producto mediante la opción &nbsp; <strong class="is-uppercase"><i class="fas fa-search"></i> &nbsp; Buscar producto</strong>. Ademas puede escribir el código de barras y presionar la tecla <strong class="is-uppercase">enter</strong></small>
+                <small>Para agregar productos debe de digitar el código de barras en el campo "Código de producto" y luego presionar &nbsp; <strong class="is-uppercase" ><i class="ri-checkbox-circle-line"></i> &nbsp; Agregar producto</strong>. También puede agregar el producto mediante la opción &nbsp; <strong class="is-uppercase"><i class="ri-search-line"></i> &nbsp; Buscar producto</strong>. Ademas puede escribir el código de barras y presionar la tecla <strong class="is-uppercase">enter</strong></small>
             </p>
             <form class="pt-6 pb-6" id="sale-barcode-form" autocomplete="off">
                 <div class="columns">
                     <div class="column is-one-quarter">
-                        <button type="button" class="button is-link is-light js-modal-trigger" data-target="modal-js-product" ><i class="fas fa-search"></i> &nbsp; Buscar producto</button>
+                        <button type="button" class="button is-link is-light js-modal-trigger" data-target="modal-js-product" ><i class="ri-search-line"></i> &nbsp; Buscar producto</button>
                     </div>
                     <div class="column">
                         <div class="field is-grouped">
@@ -29,7 +35,7 @@
                             </p>
                             <a class="control">
                                 <button type="submit" class="button is-info">
-                                    <i class="far fa-check-circle"></i> &nbsp; Agregar producto
+                                    <i class="ri-checkbox-circle-line"></i> &nbsp; Agregar producto
                                 </button>
                             </a>
                         </div>
@@ -52,17 +58,17 @@
                 <h4 class="has-text-centered has-text-weight-bold">Venta realizada</h4>
                 <p class="has-text-centered mb-2">La venta se realizó con éxito. ¿Que desea hacer a continuación? </p>
                 <br>
-                <div class="container">
+                <div>
                     <div class="columns">
                         <div class="column has-text-centered">
                             <button type="button" class="button is-link is-light" onclick="print_ticket('<?php echo APP_URL."app/pdf/ticket.php?code=".$_SESSION['venta_codigo_factura']; ?>')" >
-                                <i class="fas fa-receipt fa-2x"></i> &nbsp;
+                                <i class="ri-receipt-line"></i> &nbsp;
                                 Imprimir ticket de venta
                             </buttona>
                         </div>
                         <div class="column has-text-centered">
                             <button type="button" class="button is-link is-light" onclick="print_invoice('<?php echo APP_URL."app/pdf/invoice.php?code=".$_SESSION['venta_codigo_factura']; ?>')" >
-                                <i class="fas fa-file-invoice-dollar fa-2x"></i> &nbsp;
+                                <i class="ri-file-list-3-line"></i> &nbsp;
                                 Imprimir factura de venta
                             </button>
                         </div>
@@ -109,7 +115,7 @@
                             <td><?php echo MONEDA_SIMBOLO.number_format($productos['venta_detalle_total'],MONEDA_DECIMALES,MONEDA_SEPARADOR_DECIMAL,MONEDA_SEPARADOR_MILLAR)." ".MONEDA_NOMBRE; ?></td>
                             <td>
                                 <button type="button" class="button is-success is-rounded is-small" onclick="actualizar_cantidad('#sale_input_<?php echo str_replace(" ", "_", $productos['producto_codigo']); ?>','<?php echo $productos['producto_codigo']; ?>')" >
-                                    <i class="fas fa-redo-alt fa-fw"></i>
+                                    <i class="ri-refresh-line"></i>
                                 </button>
                             </td>
                             <td>
@@ -119,7 +125,7 @@
                                     <input type="hidden" name="modulo_venta" value="remover_producto">
 
                                     <button type="submit" class="button is-danger is-rounded is-small" title="Remover producto">
-                                        <i class="fas fa-trash-restore fa-fw"></i>
+                                        <i class="ri-delete-back-line"></i>
                                     </button>
                                 </form>
                             </td>
@@ -198,7 +204,7 @@
                     </div>
                     <div class="control">
                         <a class="button is-danger" title="Remove cliente" id="btn_remove_client" onclick="remover_cliente(<?php echo $_SESSION['datos_cliente_venta']['cliente_id']; ?>)">
-                            <i class="fas fa-user-times fa-fw"></i>
+                            <i class="ri-user-unfollow-line"></i>
                         </a>
                     </div>
                 </div>
@@ -232,7 +238,7 @@
                     </div>
                     <div class="control">
                         <a class="button is-info js-modal-trigger" data-target="modal-js-client" title="Agregar cliente" id="btn_add_client" >
-                            <i class="fas fa-user-plus fa-fw"></i>
+                            <i class="ri-user-add-line"></i>
                         </a>
                     </div>
                 </div>
@@ -252,7 +258,7 @@
 
                 <?php if($_SESSION['venta_total']>0){ ?>
                 <p class="has-text-centered">
-                    <button type="submit" class="button is-info is-rounded"><i class="far fa-save"></i> &nbsp; Guardar venta</button>
+                    <button type="submit" class="button is-info is-rounded"><i class="ri-save-line"></i> &nbsp; Guardar venta</button>
                 </p>
                 <?php } ?>
                 <p class="has-text-centered pt-6">
@@ -268,7 +274,7 @@
              <div class="message-header">
                 <p>¡Ocurrio un error inesperado!</p>
              </div>
-            <div class="message-body has-text-centered"><i class="fas fa-exclamation-triangle fa-2x"></i><br>No hemos podio seleccionar algunos datos sobre la empresa, por favor <a href="<?php echo APP_URL; ?>companyNew/" >verifique aquí los datos de la empresa</div>
+            <div class="message-body has-text-centered"><i class="ri-alert-line"></i><br>No hemos podio seleccionar algunos datos sobre la empresa, por favor <a href="<?php echo APP_URL; ?>companyNew/" >verifique aquí los datos de la empresa</div>
         </article>
     <?php } ?>
 </div>
@@ -278,7 +284,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title is-uppercase"><i class="fas fa-search"></i> &nbsp; Buscar producto</p>
+          <p class="modal-card-title is-uppercase"><i class="ri-search-line"></i> &nbsp; Buscar producto</p>
           <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
@@ -290,7 +296,7 @@
             </div>
             <div class="container" id="tabla_productos"></div>
             <p class="has-text-centered">
-                <button type="button" class="button is-link is-light" onclick="buscar_codigo()" ><i class="fas fa-search"></i> &nbsp; Buscar</button>
+                <button type="button" class="button is-link is-light" onclick="buscar_codigo()" ><i class="ri-search-line"></i> &nbsp; Buscar</button>
             </p>
         </section>
     </div>
@@ -301,7 +307,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title is-uppercase"><i class="fas fa-search"></i> &nbsp; Buscar y agregar cliente</p>
+          <p class="modal-card-title is-uppercase"><i class="ri-search-line"></i> &nbsp; Buscar y agregar cliente</p>
           <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
@@ -313,7 +319,7 @@
             </div>
             <div class="container" id="tabla_clientes"></div>
             <p class="has-text-centered">
-                <button type="button" class="button is-link is-light" onclick="buscar_cliente()" ><i class="fas fa-search"></i> &nbsp; Buscar</button>
+                <button type="button" class="button is-link is-light" onclick="buscar_cliente()" ><i class="ri-search-line"></i> &nbsp; Buscar</button>
             </p>
         </section>
     </div>
@@ -579,3 +585,4 @@
 <?php
     include "./app/views/inc/print_invoice_script.php";
 ?>
+</div>

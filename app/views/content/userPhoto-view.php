@@ -1,18 +1,15 @@
-<div class="container is-fluid mb-6">
-	<?php 
+<div class="content-wrapper">
 
-		$id=$insLogin->limpiarCadena($url[1]);
-
-		if($id==$_SESSION['id']){ 
-	?>
-	<h1 class="title">Mi foto de perfil</h1>
-	<h2 class="subtitle"><i class="fas fa-camera"></i> &nbsp; Actualizar foto de perfil</h2>
-	<?php }else{ ?>
-	<h1 class="title">Usuarios</h1>
-	<h2 class="subtitle"><i class="fas fa-camera"></i> &nbsp; Actualizar foto de perfil</h2>
-	<?php } ?>
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Usuarios</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-camera-line"></i></div>
+            Foto de usuario
+        </div>
+    </div>
 </div>
-<div class="container pb-6 pt-6">
+<div>
 	<?php
 	
 		include "./app/views/inc/btn_back.php";
@@ -39,12 +36,12 @@
 				<input type="hidden" name="usuario_id" value="<?php echo $datos['usuario_id']; ?>">
 
 				<p class="has-text-centered">
-					<button type="submit" class="button is-danger is-rounded"><i class="far fa-trash-alt"></i> &nbsp; Eliminar foto</button>
+					<button type="submit" class="button is-danger is-rounded"><i class="ri-delete-bin-line"></i> &nbsp; Eliminar foto</button>
 				</p>
 			</form>
 			<?php }else{ ?>
 			<figure class="image mb-6">
-			  	<img class="is-rounded is-photo" src="<?php echo APP_URL; ?>app/views/fotos/default.png">
+			  	<img class="is-rounded is-photo" src="<?php echo APP_URL; ?>app/views/fotos/default.svg">
 			</figure>
 			<?php }?>
 		</div>
@@ -71,7 +68,7 @@
 					</label>
 				</div>
 				<p class="has-text-centered">
-					<button type="submit" class="button is-success is-rounded"><i class="fas fa-sync-alt"></i> &nbsp; Actualizar foto</button>
+					<button type="submit" class="button is-success is-rounded"><i class="ri-refresh-line"></i> &nbsp; Actualizar foto</button>
 				</p>
 			</form>
 		</div>
@@ -81,4 +78,5 @@
 			include "./app/views/inc/error_alert.php";
 		}
 	?>
+</div>
 </div>

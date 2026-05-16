@@ -1,8 +1,15 @@
-<div class="container is-fluid mb-6">
-	<h1 class="title">Cajas</h1>
-	<h2 class="subtitle"><i class="fas fa-clipboard-list fa-fw"></i> &nbsp; Lista de cajas</h2>
+<div class="content-wrapper">
+
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Cajas</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-list-check"></i></div>
+            Lista de cajas
+        </div>
+    </div>
 </div>
-<div class="container pb-6 pt-6">
+<div>
 
 	<div class="form-rest mb-6 mt-6"></div>
 
@@ -13,4 +20,5 @@
 
 		echo $insCaja->listarCajaControlador($url[1],15,$url[0],"");
 	?>
+</div>
 </div>

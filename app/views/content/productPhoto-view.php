@@ -1,8 +1,15 @@
-<div class="container is-fluid mb-6">
-	<h1 class="title">Productos</h1>
-	<h2 class="subtitle"><i class="far fa-image"></i> &nbsp; Actualizar foto de producto</h2>
+<div class="content-wrapper">
+
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Productos</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-camera-line"></i></div>
+            Foto del producto
+        </div>
+    </div>
 </div>
-<div class="container pb-6 pt-6">
+<div>
 	<?php
 	
 		include "./app/views/inc/btn_back.php";
@@ -31,12 +38,12 @@
 				<input type="hidden" name="producto_id" value="<?php echo $datos['producto_id']; ?>">
 
 				<p class="has-text-centered">
-					<button type="submit" class="button is-danger is-rounded"><i class="far fa-trash-alt"></i> &nbsp; Eliminar foto</button>
+					<button type="submit" class="button is-danger is-rounded"><i class="ri-delete-bin-line"></i> &nbsp; Eliminar foto</button>
 				</p>
 			</form>
 			<?php }else{ ?>
 			<figure class="image mb-6">
-			  	<img class="is-photo" src="<?php echo APP_URL; ?>app/views/productos/default.png">
+			  	<img class="is-photo" src="<?php echo APP_URL; ?>app/views/productos/default.svg">
 			</figure>
 			<?php }?>
 		</div>
@@ -63,7 +70,7 @@
 					</label>
 				</div>
 				<p class="has-text-centered">
-					<button type="submit" class="button is-success is-rounded"><i class="fas fa-sync-alt"></i> &nbsp; Actualizar foto</button>
+					<button type="submit" class="button is-success is-rounded"><i class="ri-refresh-line"></i> &nbsp; Actualizar foto</button>
 				</p>
 			</form>
 		</div>
@@ -73,4 +80,5 @@
 			include "./app/views/inc/error_alert.php";
 		}
 	?>
+</div>
 </div>

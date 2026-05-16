@@ -5,10 +5,10 @@
 
 	class clientController extends mainModel{
 
-		/*----------  Controlador registrar cliente  ----------*/
+		
 		public function registrarClienteControlador(){
 
-			# Almacenando datos#
+			
 		    $tipo_documento=$this->limpiarCadena($_POST['cliente_tipo_documento']);
 		    $numero_documento=$this->limpiarCadena($_POST['cliente_numero_documento']);
 		    $nombre=$this->limpiarCadena($_POST['cliente_nombre']);
@@ -21,7 +21,7 @@
 		    $telefono=$this->limpiarCadena($_POST['cliente_telefono']);
 		    $email=$this->limpiarCadena($_POST['cliente_email']);
 
-		    # Verificando campos obligatorios #
+		    
             if($numero_documento=="" || $nombre=="" || $apellido=="" || $provincia=="" || $ciudad=="" || $direccion==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -33,7 +33,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9-]{7,30}",$numero_documento)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -113,7 +113,7 @@
 			    }
 		    }
 
-		    # Comprobando tipo de documento #
+		    
 			if(!in_array($tipo_documento, DOCUMENTOS_USUARIOS)){
 				$alerta=[
 					"tipo"=>"simple",
@@ -125,7 +125,7 @@
 		        exit();
 			}
 
-		    # Verificando email #
+		    
 		    if($email!=""){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 					$check_email=$this->ejecutarConsulta("SELECT cliente_email FROM cliente WHERE cliente_email='$email'");
@@ -151,7 +151,7 @@
 				}
             }
 
-            # Comprobando documento #
+            
 		    $check_documento=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento='$tipo_documento' AND cliente_numero_documento='$numero_documento'");
 		    if($check_documento->rowCount()>0){
 		    	$alerta=[
@@ -235,7 +235,7 @@
 		}
 
 
-		/*----------  Controlador listar cliente  ----------*/
+		
 		public function listarClienteControlador($pagina,$registros,$url,$busqueda){
 
 			$pagina=$this->limpiarCadena($pagina);
@@ -300,7 +300,7 @@
 							<td>'.$rows['cliente_email'].'</td>
 			                <td>
 			                    <a href="'.APP_URL.'clientUpdate/'.$rows['cliente_id'].'/" class="button is-success is-rounded is-small">
-			                    	<i class="fas fa-sync fa-fw"></i>
+			                    	<i class="ri-refresh-line"></i>
 			                    </a>
 			                </td>
 			                <td>
@@ -310,7 +310,7 @@
 			                		<input type="hidden" name="cliente_id" value="'.$rows['cliente_id'].'">
 
 			                    	<button type="submit" class="button is-danger is-rounded is-small">
-			                    		<i class="far fa-trash-alt fa-fw"></i>
+			                    		<i class="ri-delete-bin-line"></i>
 			                    	</button>
 			                    </form>
 			                </td>
@@ -343,7 +343,7 @@
 
 			$tabla.='</tbody></table></div>';
 
-			### Paginacion ###
+			
 			if($total>0 && $pagina<=$numeroPaginas){
 				$tabla.='<p class="has-text-right">Mostrando clientes <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>';
 
@@ -354,7 +354,7 @@
 		}
 
 
-		/*----------  Controlador eliminar cliente  ----------*/
+		
 		public function eliminarClienteControlador(){
 
 			$id=$this->limpiarCadena($_POST['cliente_id']);
@@ -370,7 +370,7 @@
 		        exit();
 			}
 
-			# Verificando cliente #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -385,7 +385,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Verificando ventas #
+		    
 		    $check_ventas=$this->ejecutarConsulta("SELECT cliente_id FROM venta WHERE cliente_id='$id' LIMIT 1");
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
@@ -422,12 +422,12 @@
 		}
 
 
-		/*----------  Controlador actualizar cliente  ----------*/
+		
 		public function actualizarClienteControlador(){
 
 			$id=$this->limpiarCadena($_POST['cliente_id']);
 
-			# Verificando cliente #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -442,7 +442,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Almacenando datos#
+		    
 		    $tipo_documento=$this->limpiarCadena($_POST['cliente_tipo_documento']);
 		    $numero_documento=$this->limpiarCadena($_POST['cliente_numero_documento']);
 		    $nombre=$this->limpiarCadena($_POST['cliente_nombre']);
@@ -455,7 +455,7 @@
 		    $telefono=$this->limpiarCadena($_POST['cliente_telefono']);
 		    $email=$this->limpiarCadena($_POST['cliente_email']);
 
-		    # Verificando campos obligatorios #
+		    
             if($numero_documento=="" || $nombre=="" || $apellido=="" || $provincia=="" || $ciudad=="" || $direccion==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -467,7 +467,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9-]{7,30}",$numero_documento)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -547,7 +547,7 @@
 			    }
 		    }
 
-		    # Comprobando tipo de documento #
+		    
 			if(!in_array($tipo_documento, DOCUMENTOS_USUARIOS)){
 				$alerta=[
 					"tipo"=>"simple",
@@ -559,7 +559,7 @@
 		        exit();
 			}
 
-			# Verificando email #
+			
 		    if($email!="" && $datos['cliente_email']!=$email){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 					$check_email=$this->ejecutarConsulta("SELECT cliente_email FROM cliente WHERE cliente_email='$email'");
@@ -585,7 +585,7 @@
 				}
             }
 
-            # Comprobando documento #
+            
             if($tipo_documento!=$datos['cliente_tipo_documento'] || $numero_documento!=$datos['cliente_numero_documento']){
 			    $check_documento=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento='$tipo_documento' AND cliente_numero_documento='$numero_documento'");
 			    if($check_documento->rowCount()>0){

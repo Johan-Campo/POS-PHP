@@ -1,3 +1,7 @@
 RewriteEngine On
-Options All -Indexes
-RewriteRule ^([a-zA-Z0-9/ñÑ-]+)$ index.php?views=$1
+Options +FollowSymLinks -Indexes -MultiViews
+DirectoryIndex index.php
+RewriteBase /MiniVend/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9/ñÑ-]+)$ index.php?views=$1 [L,QSA]

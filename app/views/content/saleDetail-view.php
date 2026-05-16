@@ -1,9 +1,15 @@
-<div class="container is-fluid mb-6">
-	<h1 class="title">Ventas</h1>
-	<h2 class="subtitle"><i class="fas fa-shopping-bag fa-fw"></i> &nbsp; Información de venta</h2>
-</div>
+<div class="content-wrapper">
 
-<div class="container pb-6 pt-6">
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Ventas</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-file-list-3-line"></i></div>
+            Detalle de venta
+        </div>
+    </div>
+</div>
+<div>
 	<?php
 	
 		include "./app/views/inc/btn_back.php";
@@ -139,10 +145,10 @@
 		<p class="has-text-centered full-width">
 			<?php
 			echo '<button type="button" class="button is-link is-light is-medium" onclick="print_invoice(\''.APP_URL.'app/pdf/invoice.php?code='.$datos_venta['venta_codigo'].'\')" title="Imprimir factura Nro. '.$datos_venta['venta_id'].'" >
-			<i class="fas fa-file-invoice-dollar fa-fw"></i> &nbsp; Imprimir factura
+			<i class="ri-file-list-3-line"></i> &nbsp; Imprimir factura
 			</button> &nbsp;&nbsp; 
 
-			<button type="button" class="button is-link is-light is-medium" onclick="print_ticket(\''.APP_URL.'app/pdf/ticket.php?code='.$datos_venta['venta_codigo'].'\')" title="Imprimir ticket Nro. '.$datos_venta['venta_id'].'" ><i class="fas fa-receipt fa-fw"></i> &nbsp; Imprimir ticket</button>';
+			<button type="button" class="button is-link is-light is-medium" onclick="print_ticket(\''.APP_URL.'app/pdf/ticket.php?code='.$datos_venta['venta_codigo'].'\')" title="Imprimir ticket Nro. '.$datos_venta['venta_id'].'" ><i class="ri-receipt-line"></i> &nbsp; Imprimir ticket</button>';
 			?>
 		</p>
 	</div>
@@ -152,4 +158,5 @@
 			include "./app/views/inc/error_alert.php";
 		}
 	?>
+</div>
 </div>

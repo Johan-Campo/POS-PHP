@@ -5,10 +5,10 @@
 
 	class userController extends mainModel{
 
-		/*----------  Controlador registrar usuario  ----------*/
+		
 		public function registrarUsuarioControlador(){
 
-			# Almacenando datos#
+			
 		    $nombre=$this->limpiarCadena($_POST['usuario_nombre']);
 		    $apellido=$this->limpiarCadena($_POST['usuario_apellido']);
 
@@ -20,7 +20,7 @@
 		    $caja=$this->limpiarCadena($_POST['usuario_caja']);
 
 
-		    # Verificando campos obligatorios #
+		    
 		    if($nombre=="" || $apellido=="" || $usuario=="" || $clave1=="" || $clave2==""){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -32,7 +32,7 @@
 		        exit();
 		    }
 
-		    # Verificando integridad de los datos #
+		    
 		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$nombre)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -77,7 +77,7 @@
 		        exit();
 		    }
 
-		    # Verificando email #
+		    
 		    if($email!=""){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
@@ -103,7 +103,7 @@
 				}
             }
 
-            # Verificando claves #
+            
             if($clave1!=$clave2){
 				$alerta=[
 					"tipo"=>"simple",
@@ -117,7 +117,7 @@
 				$clave=password_hash($clave1,PASSWORD_BCRYPT,["cost"=>10]);
             }
 
-            # Verificando usuario #
+            
 		    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
 		    if($check_usuario->rowCount()>0){
 		    	$alerta=[
@@ -130,7 +130,7 @@
 		        exit();
 		    }
 
-		    # Verificando caja #
+		    
 		    $check_caja=$this->ejecutarConsulta("SELECT caja_id FROM caja WHERE caja_id='$caja'");
 		    if($check_caja->rowCount()<=0){
 		        $alerta=[
@@ -143,13 +143,13 @@
 		        exit();
 		    }
 
-		    # Directorio de imagenes #
+		    
     		$img_dir="../views/fotos/";
 
-    		# Comprobar si se selecciono una imagen #
+    		
     		if($_FILES['usuario_foto']['name']!="" && $_FILES['usuario_foto']['size']>0){
 
-    			# Creando directorio #
+    			
 		        if(!file_exists($img_dir)){
 		            if(!mkdir($img_dir,0777)){
 		            	$alerta=[
@@ -163,7 +163,7 @@
 		            } 
 		        }
 
-		        # Verificando formato de imagenes #
+		        
 		        if(mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
@@ -175,7 +175,7 @@
 		            exit();
 		        }
 
-		        # Verificando peso de imagen #
+		        
 		        if(($_FILES['usuario_foto']['size']/1024)>5120){
 		        	$alerta=[
 						"tipo"=>"simple",
@@ -187,11 +187,11 @@
 		            exit();
 		        }
 
-		        # Nombre de la foto #
+		        
 		        $foto=str_ireplace(" ","_",$nombre);
 		        $foto=$foto."_".rand(0,100);
 
-		        # Extension de la imagen #
+		        
 		        switch(mime_content_type($_FILES['usuario_foto']['tmp_name'])){
 		            case 'image/jpeg':
 		                $foto=$foto.".jpg";
@@ -203,7 +203,7 @@
 
 		        chmod($img_dir,0777);
 
-		        # Moviendo imagen al directorio #
+		        
 		        if(!move_uploaded_file($_FILES['usuario_foto']['tmp_name'],$img_dir.$foto)){
 		        	$alerta=[
 						"tipo"=>"simple",
@@ -287,7 +287,7 @@
 
 
 
-		/*----------  Controlador listar usuario  ----------*/
+		
 		public function listarUsuarioControlador($pagina,$registros,$url,$busqueda){
 
 			$pagina=$this->limpiarCadena($pagina);
@@ -353,12 +353,12 @@
 							<td>'.$rows['usuario_email'].'</td>
 							<td>
 			                    <a href="'.APP_URL.'userPhoto/'.$rows['usuario_id'].'/" class="button is-info is-rounded is-small">
-			                    	<i class="fas fa-camera fa-fw"></i>
+			                    	<i class="ri-camera-line"></i>
 			                    </a>
 			                </td>
 			                <td>
 			                    <a href="'.APP_URL.'userUpdate/'.$rows['usuario_id'].'/" class="button is-success is-rounded is-small">
-			                    	<i class="fas fa-sync fa-fw"></i>
+			                    	<i class="ri-refresh-line"></i>
 			                    </a>
 			                </td>
 			                <td>
@@ -368,7 +368,7 @@
 			                		<input type="hidden" name="usuario_id" value="'.$rows['usuario_id'].'">
 
 			                    	<button type="submit" class="button is-danger is-rounded is-small">
-			                    		<i class="far fa-trash-alt fa-fw"></i>
+			                    		<i class="ri-delete-bin-line"></i>
 			                    	</button>
 			                    </form>
 			                </td>
@@ -401,7 +401,7 @@
 
 			$tabla.='</tbody></table></div>';
 
-			### Paginacion ###
+			
 			if($total>0 && $pagina<=$numeroPaginas){
 				$tabla.='<p class="has-text-right">Mostrando usuarios <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>';
 
@@ -412,7 +412,7 @@
 		}
 
 
-		/*----------  Controlador eliminar usuario  ----------*/
+		
 		public function eliminarUsuarioControlador(){
 
 			$id=$this->limpiarCadena($_POST['usuario_id']);
@@ -428,7 +428,7 @@
 		        exit();
 			}
 
-			# Verificando usuario #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -443,7 +443,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Verificando ventas #
+		    
 		    $check_ventas=$this->ejecutarConsulta("SELECT usuario_id FROM venta WHERE usuario_id='$id' LIMIT 1");
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
@@ -485,12 +485,12 @@
 		}
 
 
-		/*----------  Controlador actualizar usuario  ----------*/
+		
 		public function actualizarUsuarioControlador(){
 
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
-			# Verificando usuario #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -508,7 +508,7 @@
 		    $admin_usuario=$this->limpiarCadena($_POST['administrador_usuario']);
 		    $admin_clave=$this->limpiarCadena($_POST['administrador_clave']);
 
-		    # Verificando campos obligatorios admin #
+		    
 		    if($admin_usuario=="" || $admin_clave==""){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -542,7 +542,7 @@
 		        exit();
 		    }
 
-		    # Verificando administrador #
+		    
 		    $check_admin=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_usuario='$admin_usuario' AND usuario_id='".$_SESSION['id']."'");
 		    if($check_admin->rowCount()==1){
 
@@ -571,7 +571,7 @@
 		    }
 
 
-			# Almacenando datos#
+			
 		    $nombre=$this->limpiarCadena($_POST['usuario_nombre']);
 		    $apellido=$this->limpiarCadena($_POST['usuario_apellido']);
 
@@ -582,7 +582,7 @@
 
 		    $caja=$this->limpiarCadena($_POST['usuario_caja']);
 
-		    # Verificando campos obligatorios #
+		    
 		    if($nombre=="" || $apellido=="" || $usuario==""){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -594,7 +594,7 @@
 		        exit();
 		    }
 
-		    # Verificando integridad de los datos #
+		    
 		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$nombre)){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -628,7 +628,7 @@
 		        exit();
 		    }
 
-		    # Verificando email #
+		    
 		    if($email!="" && $datos['usuario_email']!=$email){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
@@ -654,7 +654,7 @@
 				}
             }
 
-            # Verificando claves #
+            
             if($clave1!="" || $clave2!=""){
             	if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave1) || $this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave2)){
 
@@ -685,7 +685,7 @@
 				$clave=$datos['usuario_clave'];
             }
 
-            # Verificando usuario #
+            
             if($datos['usuario_usuario']!=$usuario){
 			    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
 			    if($check_usuario->rowCount()>0){
@@ -700,7 +700,7 @@
 			    }
             }
 
-            # Verificando caja #
+            
             if($datos['caja_id']!=$caja){
 			    $check_caja=$this->ejecutarConsulta("SELECT caja_id FROM caja WHERE caja_id='$caja'");
 			    if($check_caja->rowCount()<=0){
@@ -781,12 +781,12 @@
 		}
 
 
-		/*----------  Controlador eliminar foto usuario  ----------*/
+		
 		public function eliminarFotoUsuarioControlador(){
 
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
-			# Verificando usuario #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -801,7 +801,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Directorio de imagenes #
+		    
     		$img_dir="../views/fotos/";
 
     		chmod($img_dir,0777);
@@ -870,12 +870,12 @@
 		}
 
 
-		/*----------  Controlador actualizar foto usuario  ----------*/
+		
 		public function actualizarFotoUsuarioControlador(){
 
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
-			# Verificando usuario #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -890,10 +890,10 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Directorio de imagenes #
+		    
     		$img_dir="../views/fotos/";
 
-    		# Comprobar si se selecciono una imagen #
+    		
     		if($_FILES['usuario_foto']['name']=="" && $_FILES['usuario_foto']['size']<=0){
     			$alerta=[
 					"tipo"=>"simple",
@@ -905,7 +905,7 @@
 		        exit();
     		}
 
-    		# Creando directorio #
+    		
 	        if(!file_exists($img_dir)){
 	            if(!mkdir($img_dir,0777)){
 	                $alerta=[
@@ -919,7 +919,7 @@
 	            } 
 	        }
 
-	        # Verificando formato de imagenes #
+	        
 	        if(mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/png"){
 	            $alerta=[
 					"tipo"=>"simple",
@@ -931,7 +931,7 @@
 	            exit();
 	        }
 
-	        # Verificando peso de imagen #
+	        
 	        if(($_FILES['usuario_foto']['size']/1024)>5120){
 	            $alerta=[
 					"tipo"=>"simple",
@@ -943,7 +943,7 @@
 	            exit();
 	        }
 
-	        # Nombre de la foto #
+	        
 	        if($datos['usuario_foto']!=""){
 		        $foto=explode(".", $datos['usuario_foto']);
 		        $foto=$foto[0];
@@ -953,7 +953,7 @@
 	        }
 	        
 
-	        # Extension de la imagen #
+	        
 	        switch(mime_content_type($_FILES['usuario_foto']['tmp_name'])){
 	            case 'image/jpeg':
 	                $foto=$foto.".jpg";
@@ -965,7 +965,7 @@
 
 	        chmod($img_dir,0777);
 
-	        # Moviendo imagen al directorio #
+	        
 	        if(!move_uploaded_file($_FILES['usuario_foto']['tmp_name'],$img_dir.$foto)){
 	            $alerta=[
 					"tipo"=>"simple",
@@ -977,7 +977,7 @@
 	            exit();
 	        }
 
-	        # Eliminando imagen anterior #
+	        
 	        if(is_file($img_dir.$datos['usuario_foto']) && $datos['usuario_foto']!=$foto){
 		        chmod($img_dir.$datos['usuario_foto'], 0777);
 		        unlink($img_dir.$datos['usuario_foto']);

@@ -5,10 +5,10 @@
 
 	class companyController extends mainModel{
 
-		/*----------  Controlador registrar empresa  ----------*/
+		
 		public function registrarEmpresaControlador(){
 
-			# Almacenando datos#
+			
 		    $nombre=$this->limpiarCadena($_POST['empresa_nombre']);
 
 		    $telefono=$this->limpiarCadena($_POST['empresa_telefono']);
@@ -16,7 +16,7 @@
 
 		    $direccion=$this->limpiarCadena($_POST['empresa_direccion']);
 
-		    # Verificando campos obligatorios #
+		    
             if($nombre==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -28,7 +28,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ., ]{4,85}",$nombre)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -66,7 +66,7 @@
 			    }
 		    }
 
-		    # Verificando email #
+		    
 		    if($email!=""){
 				if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 					$alerta=[
@@ -125,12 +125,12 @@
 		}
 
 
-		/*----------  Controlador actualizar empresa  ----------*/
+		
 		public function actualizarEmpresaControlador(){
 
 			$id=$this->limpiarCadena($_POST['empresa_id']);
 
-			# Verificando empresa #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM empresa WHERE empresa_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -145,7 +145,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Almacenando datos#
+		    
 		    $nombre=$this->limpiarCadena($_POST['empresa_nombre']);
 
 		    $telefono=$this->limpiarCadena($_POST['empresa_telefono']);
@@ -153,7 +153,7 @@
 
 		    $direccion=$this->limpiarCadena($_POST['empresa_direccion']);
 
-		    # Verificando campos obligatorios #
+		    
             if($nombre==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -165,7 +165,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ., ]{4,85}",$nombre)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -203,7 +203,7 @@
 			    }
 		    }
 
-		    # Verificando email #
+		    
 		    if($email!=""){
 				if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 					$alerta=[

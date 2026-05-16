@@ -2,11 +2,11 @@
 
 	$code=(isset($_GET['code'])) ? $_GET['code'] : 0;
 
-	/*---------- Incluyendo configuraciones ----------*/
+	
     require_once "../../config/app.php";
     require_once "../../autoload.php";
 
-	/*---------- Instancia al controlador venta ----------*/
+	
 	use app\controllers\saleController;
 	$ins_venta = new saleController();
 
@@ -14,10 +14,10 @@
 
 	if($datos_venta->rowCount()==1){
         
-		/*---------- Datos de la venta ----------*/
+		
 		$datos_venta=$datos_venta->fetch();
 
-		/*---------- Seleccion de datos de la empresa ----------*/
+		
 		$datos_empresa=$ins_venta->seleccionarDatos("Normal","empresa LIMIT 1","*",0);
 		$datos_empresa=$datos_empresa->fetch();
 
@@ -75,7 +75,7 @@
         $pdf->Cell(72,5,iconv("UTF-8", "ISO-8859-1","-------------------------------------------------------------------"),0,0,'C');
         $pdf->Ln(3);
 
-        /*----------  Seleccionando detalles de la venta  ----------*/
+        
 		$venta_detalle=$ins_venta->seleccionarDatos("Normal","venta_detalle WHERE venta_codigo='".$datos_venta['venta_codigo']."'","*",0);
         $venta_detalle=$venta_detalle->fetchAll();
         

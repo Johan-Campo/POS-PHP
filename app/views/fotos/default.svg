@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7C3AED"/>
+      <stop offset="48%"  stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.97"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.88"/>
+    </linearGradient>
+    <clipPath id="clip">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+
+  <!-- Fondo gradiente -->
+  <circle cx="100" cy="100" r="100" fill="url(#bg)"/>
+
+  <!-- Brillo superior sutil -->
+  <ellipse cx="100" cy="40" rx="70" ry="40" fill="white" opacity="0.08"/>
+
+  <!-- Silueta moderna — cabeza -->
+  <circle cx="100" cy="76" r="30" fill="url(#body)"/>
+
+  <!-- Silueta moderna — cuerpo/torso (clip al círculo) -->
+  <g clip-path="url(#clip)">
+    <ellipse cx="100" cy="174" rx="58" ry="50" fill="url(#body)"/>
+  </g>
+
+  <!-- Anillo decorativo sutil -->
+  <circle cx="100" cy="100" r="97" fill="none" stroke="white" stroke-width="1.5" opacity="0.18"/>
+</svg>

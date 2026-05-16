@@ -5,7 +5,7 @@
 
 	class searchController extends mainModel{
 
-		/*----------  Controlador modulos de busquedas  ----------*/
+		
 		public function modulosBusquedaControlador($modulo){
 
 			$listaModulos=['userSearch','cashierSearch','clientSearch','categorySearch','productSearch','saleSearch'];
@@ -18,7 +18,7 @@
 		}
 
 
-		/*----------  Controlador iniciar busqueda  ----------*/
+		
 		public function iniciarBuscadorControlador(){
 
 		    $url=$this->limpiarCadena($_POST['modulo_url']);
@@ -68,7 +68,7 @@
 		}
 
 
-		/*----------  Controlador eliminar busqueda  ----------*/
+		
 		public function eliminarBuscadorControlador(){
 
 			$url=$this->limpiarCadena($_POST['modulo_url']);

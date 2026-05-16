@@ -1,9 +1,15 @@
-<div class="container is-fluid mb-6">
-	<h1 class="title">Productos</h1>
-	<h2 class="subtitle"><i class="fas fa-box fa-fw"></i> &nbsp; Nuevo producto</h2>
-</div>
+<div class="content-wrapper">
 
-<div class="container pb-6 pt-6">
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Productos</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-add-circle-line"></i></div>
+            Nuevo producto
+        </div>
+    </div>
+</div>
+<div>
 
 	<form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productoAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data" >
 
@@ -102,11 +108,12 @@
 			</div>
 		</div>
 		<p class="has-text-centered">
-			<button type="reset" class="button is-link is-light is-rounded"><i class="fas fa-paint-roller"></i> &nbsp; Limpiar</button>
-			<button type="submit" class="button is-info is-rounded"><i class="far fa-save"></i> &nbsp; Guardar</button>
+			<button type="reset" class="button is-link is-light is-rounded"><i class="ri-eraser-line"></i> &nbsp; Limpiar</button>
+			<button type="submit" class="button is-info is-rounded"><i class="ri-save-line"></i> &nbsp; Guardar</button>
 		</p>
 		<p class="has-text-centered pt-6">
             <small>Los campos marcados con <?php echo CAMPO_OBLIGATORIO; ?> son obligatorios</small>
         </p>
 	</form>
+</div>
 </div>

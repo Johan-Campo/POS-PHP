@@ -1,34 +1,45 @@
 <div class="main-container">
+    <div class="login-card">
 
-    <form class="box login" action="" method="POST" autocomplete="off" >
-    	<p class="has-text-centered">
-            <i class="fas fa-user-circle fa-5x"></i>
-        </p>
-		<h5 class="title is-5 has-text-centered">Inicia sesión con tu cuenta</h5>
+        <div class="login-logo">
+            <img src="<?php echo APP_URL; ?>app/views/img/logo.svg"
+                 width="56" height="56" alt="MiniVend"
+                 style="border-radius:14px; box-shadow:0 8px 24px rgba(79,70,229,.45);">
+            <div class="login-logo-text">Mini<span>Vend</span></div>
+        </div>
 
-		<?php
-			if(isset($_POST['login_usuario']) && isset($_POST['login_clave'])){
-				$insLogin->iniciarSesionControlador();
-			}
-		?>
+        <p class="login-title">Bienvenido de vuelta</p>
+        <p class="login-subtitle">Ingresa tus credenciales para continuar</p>
 
-		<div class="field">
-			<label class="label"><i class="fas fa-user-secret"></i> &nbsp; Usuario</label>
-			<div class="control">
-			    <input class="input" type="text" name="login_usuario" pattern="[a-zA-Z0-9]{4,20}" maxlength="20" required >
-			</div>
-		</div>
+        <?php
+            if(isset($_POST['login_usuario']) && isset($_POST['login_clave'])){
+                $insLogin->iniciarSesionControlador();
+            }
+        ?>
 
-		<div class="field">
-		  	<label class="label"><i class="fas fa-key"></i> &nbsp; Clave</label>
-		  	<div class="control">
-		    	<input class="input" type="password" name="login_clave" pattern="[a-zA-Z0-9$@.-]{7,100}" maxlength="100" required >
-		  	</div>
-		</div>
+        <form action="" method="POST" autocomplete="off">
+            <div class="login-field">
+                <label class="login-label">
+                    <i class="ri-user-line"></i> Usuario
+                </label>
+                <input class="login-input" type="text" name="login_usuario"
+                       pattern="[a-zA-Z0-9]{4,20}" maxlength="20"
+                       placeholder="Tu nombre de usuario" required autofocus>
+            </div>
 
-		<p class="has-text-centered mb-4 mt-3">
-			<button type="submit" class="button is-info is-rounded">LOG IN</button>
-		</p>
+            <div class="login-field">
+                <label class="login-label">
+                    <i class="ri-lock-line"></i> Contraseña
+                </label>
+                <input class="login-input" type="password" name="login_clave"
+                       pattern="[a-zA-Z0-9$@.\-]{7,100}" maxlength="100"
+                       placeholder="Tu contraseña" required>
+            </div>
 
-	</form>
+            <button type="submit" class="login-btn">
+                <i class="ri-login-circle-line"></i> &nbsp; Iniciar sesión
+            </button>
+        </form>
+
+    </div>
 </div>

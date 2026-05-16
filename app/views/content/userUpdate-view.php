@@ -1,18 +1,15 @@
-<div class="container is-fluid mb-6">
-	<?php 
+<div class="content-wrapper">
 
-		$id=$insLogin->limpiarCadena($url[1]);
-
-		if($id==$_SESSION['id']){ 
-	?>
-	<h1 class="title">Mi cuenta</h1>
-	<h2 class="subtitle"><i class="fas fa-sync-alt"></i> &nbsp; Actualizar cuenta</h2>
-	<?php }else{ ?>
-	<h1 class="title">Usuarios</h1>
-	<h2 class="subtitle"><i class="fas fa-sync-alt"></i> &nbsp; Actualizar usuario</h2>
-	<?php } ?>
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Usuarios</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-user-settings-line"></i></div>
+            Actualizar usuario
+        </div>
+    </div>
 </div>
-<div class="container pb-6 pt-6">
+<div>
 	<?php
 	
 		include "./app/views/inc/btn_back.php";
@@ -29,7 +26,7 @@
     			if(is_file("./app/views/fotos/".$datos['usuario_foto'])){
     				echo '<img class="is-rounded" src="'.APP_URL.'app/views/fotos/'.$datos['usuario_foto'].'">';
     			}else{
-    				echo '<img class="is-rounded" src="'.APP_URL.'app/views/fotos/default.png">';
+    				echo '<img class="is-rounded" src="'.APP_URL.'app/views/fotos/default.svg">';
     			}
     		?>
 		</figure>
@@ -128,7 +125,7 @@
 		  	</div>
 		</div>
 		<p class="has-text-centered">
-			<button type="submit" class="button is-success is-rounded"><i class="fas fa-sync-alt"></i> &nbsp; Actualizar</button>
+			<button type="submit" class="button is-success is-rounded"><i class="ri-refresh-line"></i> &nbsp; Actualizar</button>
 		</p>
 		<p class="has-text-centered pt-6">
             <small>Los campos marcados con <?php echo CAMPO_OBLIGATORIO; ?> son obligatorios</small>
@@ -139,4 +136,5 @@
 			include "./app/views/inc/error_alert.php";
 		}
 	?>
+</div>
 </div>

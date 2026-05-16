@@ -15,7 +15,7 @@
 		private $pass=DB_PASS;
 
 
-		/*----------  Funcion conectar a BD  ----------*/
+		
 		protected function conectar(){
 			$conexion = new PDO("mysql:host=".$this->server.";dbname=".$this->db,$this->user,$this->pass);
 			$conexion->exec("SET CHARACTER SET utf8");
@@ -23,15 +23,15 @@
 		}
 
 
-		/*----------  Funcion ejecutar consultas  ----------*/
-		protected function ejecutarConsulta($consulta){
+		
+		public function ejecutarConsulta($consulta){
 			$sql=$this->conectar()->prepare($consulta);
 			$sql->execute();
 			return $sql;
 		}
 
 
-		/*----------  Funcion limpiar cadenas  ----------*/
+		
 		public function limpiarCadena($cadena){
 
 			$palabras=["<script>","</script>","<script src","<script type=","SELECT * FROM","SELECT "," SELECT ","DELETE FROM","INSERT INTO","DROP TABLE","DROP DATABASE","TRUNCATE TABLE","SHOW TABLES","SHOW DATABASES","<?php","?>","--","^","<",">","==",";","::"];
@@ -50,7 +50,7 @@
 		}
 
 
-		/*---------- Funcion verificar datos (expresion regular) ----------*/
+		
 		protected function verificarDatos($filtro,$cadena){
 			if(preg_match("/^".$filtro."$/", $cadena)){
 				return false;
@@ -60,7 +60,7 @@
 		}
 
 
-		/*----------  Funcion para ejecutar una consulta INSERT preparada  ----------*/
+		
 		protected function guardarDatos($tabla,$datos){
 
 			$query="INSERT INTO $tabla (";
@@ -94,7 +94,7 @@
 		}
 
 
-		/*---------- Funcion seleccionar datos ----------*/
+		
         public function seleccionarDatos($tipo,$tabla,$campo,$id){
 			$tipo=$this->limpiarCadena($tipo);
 			$tabla=$this->limpiarCadena($tabla);
@@ -113,7 +113,7 @@
 		}
 
 
-		/*----------  Funcion para ejecutar una consulta UPDATE preparada  ----------*/
+		
 		protected function actualizarDatos($tabla,$datos,$condicion){
 
 			$query="UPDATE $tabla SET ";
@@ -141,7 +141,7 @@
 		}
 
 
-		/*---------- Funcion eliminar registro ----------*/
+		
         protected function eliminarRegistro($tabla,$campo,$id){
             $sql=$this->conectar()->prepare("DELETE FROM $tabla WHERE $campo=:id");
             $sql->bindParam(":id",$id);
@@ -151,18 +151,18 @@
         }
 
 
-		/*---------- Paginador de tablas ----------*/
+		
 		protected function paginadorTablas($pagina,$numeroPaginas,$url,$botones){
 	        $tabla='<nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">';
 
 	        if($pagina<=1){
 	            $tabla.='
-	            <a class="pagination-previous is-disabled" disabled ><i class="fas fa-arrow-alt-circle-left"></i> &nbsp; Anterior</a>
+	            <a class="pagination-previous is-disabled" disabled ><i class="ri-arrow-left-circle-line"></i> &nbsp; Anterior</a>
 	            <ul class="pagination-list">
 	            ';
 	        }else{
 	            $tabla.='
-	            <a class="pagination-previous" href="'.$url.($pagina-1).'/"><i class="fas fa-arrow-alt-circle-left"></i> &nbsp; Anterior</a>
+	            <a class="pagination-previous" href="'.$url.($pagina-1).'/"><i class="ri-arrow-left-circle-line"></i> &nbsp; Anterior</a>
 	            <ul class="pagination-list">
 	                <li><a class="pagination-link" href="'.$url.'1/">1</a></li>
 	                <li><span class="pagination-ellipsis">&hellip;</span></li>
@@ -190,14 +190,14 @@
 	        if($pagina==$numeroPaginas){
 	            $tabla.='
 	            </ul>
-	            <a class="pagination-next is-disabled" disabled ><i class="fas fa-arrow-alt-circle-right"></i> &nbsp; Siguiente</a>
+	            <a class="pagination-next is-disabled" disabled ><i class="ri-arrow-right-circle-line"></i> &nbsp; Siguiente</a>
 	            ';
 	        }else{
 	            $tabla.='
 	                <li><span class="pagination-ellipsis">&hellip;</span></li>
 	                <li><a class="pagination-link" href="'.$url.$numeroPaginas.'/">'.$numeroPaginas.'</a></li>
 	            </ul>
-	            <a class="pagination-next" href="'.$url.($pagina+1).'/"><i class="fas fa-arrow-alt-circle-right"></i> &nbsp; Siguiente</a>
+	            <a class="pagination-next" href="'.$url.($pagina+1).'/"><i class="ri-arrow-right-circle-line"></i> &nbsp; Siguiente</a>
 	            ';
 	        }
 
@@ -206,7 +206,7 @@
 	    }
 
 
-	    /*----------  Funcion generar select ----------*/
+	    
 		public function generarSelect($datos,$campo_db){
 			$check_select='';
 			$text_select='';
@@ -228,7 +228,7 @@
 			return $select;
 		}
 
-		/*----------  Funcion generar codigos aleatorios  ----------*/
+		
 		protected function generarCodigoAleatorio($longitud,$correlativo){
 			$codigo="";
 			$caracter="Letra";
@@ -248,7 +248,7 @@
 		}
 
 
-		/*----------  Limitar cadenas de texto  ----------*/
+		
 		public function limitarCadena($cadena,$limite,$sufijo){
 			if(strlen($cadena)>$limite){
 				return substr($cadena,0,$limite).$sufijo;

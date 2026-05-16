@@ -5,7 +5,7 @@
 
 	class viewsController extends viewsModel{
 
-		/*---------- Controlador obtener vistas ----------*/
+		
 		public function obtenerVistasControlador($vista){
 			if($vista!=""){
 				$respuesta=$this->obtenerVistasModelo($vista);

@@ -1,9 +1,15 @@
-<div class="container is-fluid mb-6">
-    <h1 class="title">Clientes</h1>
-    <h2 class="subtitle"><i class="fas fa-search fa-fw"></i> &nbsp; Buscar clientes</h2>
-</div>
+<div class="content-wrapper">
 
-<div class="container pb-6 pt-6">
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Clientes</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-search-line"></i></div>
+            Buscar cliente
+        </div>
+    </div>
+</div>
+<div>
     <?php
     
         use app\controllers\clientController;
@@ -33,9 +39,9 @@
             <form class="has-text-centered mt-6 mb-6 FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/buscadorAjax.php" method="POST" autocomplete="off" >
                 <input type="hidden" name="modulo_buscador" value="eliminar">
                 <input type="hidden" name="modulo_url" value="<?php echo $url[0]; ?>">
-                <p><i class="fas fa-search fa-fw"></i> &nbsp; Estas buscando <strong>“<?php echo $_SESSION[$url[0]]; ?>”</strong></p>
+                <p><i class="ri-search-line"></i> &nbsp; Estas buscando <strong>“<?php echo $_SESSION[$url[0]]; ?>”</strong></p>
                 <br>
-                <button type="submit" class="button is-danger is-rounded"><i class="fas fa-trash-restore"></i> &nbsp; Eliminar busqueda</button>
+                <button type="submit" class="button is-danger is-rounded"><i class="ri-delete-back-line"></i> &nbsp; Eliminar busqueda</button>
             </form>
         </div>
     </div>
@@ -43,4 +49,5 @@
             echo $insCliente->listarClienteControlador($url[1],15,$url[0],$_SESSION[$url[0]]);
         }
     ?>
+</div>
 </div>

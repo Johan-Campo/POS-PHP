@@ -1,9 +1,15 @@
-<div class="container is-fluid mb-6">
-	<h1 class="title">Productos</h1>
-	<h2 class="subtitle"><i class="fas fa-boxes fa-fw"></i> &nbsp; Productos por categoría</h2>
-</div>
+<div class="content-wrapper">
 
-<div class="container pb-6 pt-6">
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="page-header-breadcrumb"><i class="ri-home-4-line"></i> Productos</div>
+        <div class="page-header-title">
+            <div class="page-header-icon"><i class="ri-inbox-line"></i></div>
+            Productos por categoría
+        </div>
+    </div>
+</div>
+<div>
     <?php
         use app\controllers\productController;
         $insProducto = new productController();
@@ -48,11 +54,12 @@
                     echo $insProducto->listarProductoControlador($url[2],10,$url[0],"",$url[1]);
                 }else{
                     echo '
-                    <p class="has-text-centered pb-6"><i class="far fa-grin-wink fa-5x"></i></p>
+                    <p class="has-text-centered pb-6"><i class="ri-emotion-happy-line"></i></p>
                     <h2 class="has-text-centered title" >Seleccione una categoría para empezar</h2>';
                 }
             ?>
         </div>
 
     </div>
+</div>
 </div>

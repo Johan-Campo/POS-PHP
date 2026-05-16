@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="box" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7C3AED" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#EC4899" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="200" height="200" rx="16" fill="url(#bg)"/>
+
+  <!-- Caja / producto placeholder -->
+  <!-- Cuerpo de la caja -->
+  <rect x="58" y="82" width="84" height="72" rx="8" fill="url(#box)" stroke="#CBD5E1" stroke-width="1.5"/>
+
+  <!-- Tapa de la caja -->
+  <path d="M55 82 L100 62 L145 82" fill="none" stroke="#CBD5E1" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M55 82 L100 102 L145 82" fill="url(#box)" stroke="#CBD5E1" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Línea central de la tapa -->
+  <line x1="100" y1="62" x2="100" y2="102" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Cinta/lazo de la caja -->
+  <line x1="100" y1="82" x2="100" y2="154" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <line x1="58"  y1="118" x2="142" y2="118" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+  <!-- Texto de placeholder -->
+  <text x="100" y="176"
+        font-family="Inter, Arial, sans-serif"
+        font-size="11"
+        font-weight="600"
+        fill="#94A3B8"
+        text-anchor="middle">Sin imagen</text>
+</svg>

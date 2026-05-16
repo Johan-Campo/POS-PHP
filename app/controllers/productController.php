@@ -5,10 +5,10 @@
 
 	class productController extends mainModel{
 
-		/*----------  Controlador registrar producto  ----------*/
+		
 		public function registrarProductoControlador(){
 
-			# Almacenando datos#
+			
 		    $codigo=$this->limpiarCadena($_POST['producto_codigo']);
 		    $nombre=$this->limpiarCadena($_POST['producto_nombre']);
 
@@ -21,7 +21,7 @@
 		    $unidad=$this->limpiarCadena($_POST['producto_unidad']);
 		    $categoria=$this->limpiarCadena($_POST['producto_categoria']);
 
-		    # Verificando campos obligatorios #
+		    
             if($codigo=="" || $nombre=="" || $precio_compra=="" || $precio_venta=="" || $stock==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -33,7 +33,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9- ]{1,77}",$codigo)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -115,7 +115,7 @@
 			    }
 		    }
 
-		    # Comprobando presentacion del producto #
+		    
 			if(!in_array($unidad, PRODUCTO_UNIDAD)){
 				$alerta=[
 					"tipo"=>"simple",
@@ -127,7 +127,7 @@
 		        exit();
 			}
 
-			# Verificando categoria #
+			
 		    $check_categoria=$this->ejecutarConsulta("SELECT categoria_id FROM categoria WHERE categoria_id='$categoria'");
 		    if($check_categoria->rowCount()<=0){
 		        $alerta=[
@@ -140,7 +140,7 @@
 		        exit();
 		    }
 
-		    # Verificando stock total o existencias #
+		    
             if($stock<=0){
 				$alerta=[
 					"tipo"=>"simple",
@@ -152,7 +152,7 @@
 		        exit();
             }
 
-            # Comprobando precio de compra del producto #
+            
             $precio_compra=number_format($precio_compra,MONEDA_DECIMALES,'.','');
             if($precio_compra<=0){
 				$alerta=[
@@ -165,7 +165,7 @@
 		        exit();
             }
 
-            # Comprobando precio de venta del producto #
+            
             $precio_venta=number_format($precio_venta,MONEDA_DECIMALES,'.','');
             if($precio_venta<=0){
                 $alerta=[
@@ -178,7 +178,7 @@
 		        exit();
 			}
 
-			# Comprobando precio de compra y venta del producto #
+			
 			if($precio_compra>$precio_venta){
 				$alerta=[
 					"tipo"=>"simple",
@@ -190,7 +190,7 @@
 		        exit();
 			}
 
-			# Comprobando codigo de producto #
+			
 		    $check_codigo=$this->ejecutarConsulta("SELECT producto_codigo FROM producto WHERE producto_codigo='$codigo'");
 		    if($check_codigo->rowCount()>=1){
 		        $alerta=[
@@ -203,7 +203,7 @@
 		        exit();
 		    }
 
-		    # Comprobando nombre de producto #
+		    
 		    $check_nombre=$this->ejecutarConsulta("SELECT producto_nombre FROM producto WHERE producto_codigo='$codigo' AND producto_nombre='$nombre'");
 		    if($check_nombre->rowCount()>=1){
 		        $alerta=[
@@ -216,13 +216,13 @@
 		        exit();
 		    }
 
-		    # Directorios de imagenes #
+		    
 			$img_dir='../views/productos/';
 
-			# Comprobar si se selecciono una imagen #
+			
     		if($_FILES['producto_foto']['name']!="" && $_FILES['producto_foto']['size']>0){
 
-    			# Creando directorio #
+    			
 		        if(!file_exists($img_dir)){
 		            if(!mkdir($img_dir,0777)){
 		            	$alerta=[
@@ -236,7 +236,7 @@
 		            } 
 		        }
 
-		        # Verificando formato de imagenes #
+		        
 		        if(mime_content_type($_FILES['producto_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['producto_foto']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
@@ -248,7 +248,7 @@
 		            exit();
 		        }
 
-		        # Verificando peso de imagen #
+		        
 		        if(($_FILES['producto_foto']['size']/1024)>5120){
 		        	$alerta=[
 						"tipo"=>"simple",
@@ -260,10 +260,10 @@
 		            exit();
 		        }
 
-		        # Nombre de la foto #
+		        
 		        $foto=$codigo."_".rand(0,100);
 
-		        # Extension de la imagen #
+		        
 		        switch(mime_content_type($_FILES['producto_foto']['tmp_name'])){
 		            case 'image/jpeg':
 		                $foto=$foto.".jpg";
@@ -275,7 +275,7 @@
 
 		        chmod($img_dir,0777);
 
-		        # Moviendo imagen al directorio #
+		        
 		        if(!move_uploaded_file($_FILES['producto_foto']['tmp_name'],$img_dir.$foto)){
 		        	$alerta=[
 						"tipo"=>"simple",
@@ -377,7 +377,7 @@
 		}
 
 
-		/*----------  Controlador listar producto  ----------*/
+		
 		public function listarProductoControlador($pagina,$registros,$url,$busqueda,$categoria){
 
 			$pagina=$this->limpiarCadena($pagina);
@@ -438,7 +438,7 @@
 		                        if(is_file("./app/views/productos/".$rows['producto_foto'])){
 		                            $tabla.='<img src="'.APP_URL.'app/views/productos/'.$rows['producto_foto'].'">';
 		                        }else{
-		                            $tabla.='<img src="'.APP_URL.'app/views/productos/default.png">';
+		                            $tabla.='<img src="'.APP_URL.'app/views/productos/default.svg">';
 		                        }
 		            $tabla.='</p>
 		                </figure>
@@ -454,11 +454,11 @@
 		                    </div>
 		                    <div class="has-text-right">
 		                        <a href="'.APP_URL.'productPhoto/'.$rows['producto_id'].'/" class="button is-info is-rounded is-small">
-			                    	<i class="far fa-image fa-fw"></i>
+			                    	<i class="ri-image-line"></i>
 			                    </a>
 
 		                        <a href="'.APP_URL.'productUpdate/'.$rows['producto_id'].'/" class="button is-success is-rounded is-small">
-		                        	<i class="fas fa-sync fa-fw"></i>
+		                        	<i class="ri-refresh-line"></i>
 		                        </a>
 
 		                        <form class="FormularioAjax is-inline-block" action="'.APP_URL.'app/ajax/productoAjax.php" method="POST" autocomplete="off" >
@@ -467,7 +467,7 @@
 			                		<input type="hidden" name="producto_id" value="'.$rows['producto_id'].'">
 
 			                    	<button type="submit" class="button is-danger is-rounded is-small">
-			                    		<i class="far fa-trash-alt fa-fw"></i>
+			                    		<i class="ri-delete-bin-line"></i>
 			                    	</button>
 			                    </form>
 		                    </div>
@@ -483,7 +483,7 @@
 			}else{
 				if($total>=1){
 					$tabla.='
-						<p class="has-text-centered pb-6"><i class="far fa-hand-point-down fa-5x"></i></p>
+						<p class="has-text-centered pb-6"><i class="ri-arrow-down-circle-line"></i></p>
 			            <p class="has-text-centered">
 			                <a href="'.$url.'1/" class="button is-link is-rounded is-small mt-4 mb-4">
 			                    Haga clic acá para recargar el listado
@@ -492,13 +492,13 @@
 					';
 				}else{
 					$tabla.='
-						<p class="has-text-centered pb-6"><i class="far fa-grin-beam-sweat fa-5x"></i></p>
+						<p class="has-text-centered pb-6"><i class="ri-emotion-sad-line"></i></p>
 						<p class="has-text-centered">No hay productos registrados en esta categoría</p>
 					';
 				}
 			}
 
-			### Paginacion ###
+			
 			if($total>0 && $pagina<=$numeroPaginas){
 				$tabla.='<p class="has-text-right">Mostrando productos <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>';
 
@@ -509,12 +509,12 @@
 		}
 
 
-		/*----------  Controlador eliminar producto  ----------*/
+		
 		public function eliminarProductoControlador(){
 
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
-			# Verificando producto #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -529,7 +529,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Verificando ventas #
+		    
 		    $check_ventas=$this->ejecutarConsulta("SELECT producto_id FROM venta_detalle WHERE producto_id='$id' LIMIT 1");
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
@@ -571,12 +571,12 @@
 		}
 
 
-		/*----------  Controlador actualizar producto  ----------*/
+		
 		public function actualizarProductoControlador(){
 
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
-			# Verificando producto #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -591,7 +591,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Almacenando datos#
+		    
 		    $codigo=$this->limpiarCadena($_POST['producto_codigo']);
 		    $nombre=$this->limpiarCadena($_POST['producto_nombre']);
 
@@ -604,7 +604,7 @@
 		    $unidad=$this->limpiarCadena($_POST['producto_unidad']);
 		    $categoria=$this->limpiarCadena($_POST['producto_categoria']);
 
-		    # Verificando campos obligatorios #
+		    
             if($codigo=="" || $nombre=="" || $precio_compra=="" || $precio_venta=="" || $stock==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -616,7 +616,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9- ]{1,77}",$codigo)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -698,7 +698,7 @@
 			    }
 		    }
 
-		    # Comprobando presentacion del producto #
+		    
 			if(!in_array($unidad, PRODUCTO_UNIDAD)){
 				$alerta=[
 					"tipo"=>"simple",
@@ -710,7 +710,7 @@
 		        exit();
 			}
 
-			# Verificando categoria #
+			
 			if($datos['categoria_id']!=$categoria){
 			    $check_categoria=$this->ejecutarConsulta("SELECT categoria_id FROM categoria WHERE categoria_id='$categoria'");
 			    if($check_categoria->rowCount()<=0){
@@ -725,7 +725,7 @@
 			    }
 			}
 
-		    # Verificando stock total o existencias #
+		    
             if($stock<=0){
 				$alerta=[
 					"tipo"=>"simple",
@@ -737,7 +737,7 @@
 		        exit();
             }
 
-            # Comprobando precio de compra del producto #
+            
             $precio_compra=number_format($precio_compra,MONEDA_DECIMALES,'.','');
             if($precio_compra<=0){
 				$alerta=[
@@ -750,7 +750,7 @@
 		        exit();
             }
 
-            # Comprobando precio de venta del producto #
+            
             $precio_venta=number_format($precio_venta,MONEDA_DECIMALES,'.','');
             if($precio_venta<=0){
                 $alerta=[
@@ -763,7 +763,7 @@
 		        exit();
 			}
 
-			# Comprobando precio de compra y venta del producto #
+			
 			if($precio_compra>$precio_venta){
 				$alerta=[
 					"tipo"=>"simple",
@@ -775,7 +775,7 @@
 		        exit();
 			}
 
-			# Comprobando codigo de producto #
+			
 			if($datos['producto_codigo']!=$codigo){
 			    $check_codigo=$this->ejecutarConsulta("SELECT producto_codigo FROM producto WHERE producto_codigo='$codigo'");
 			    if($check_codigo->rowCount()>=1){
@@ -790,7 +790,7 @@
 			    }
 			}
 
-		    # Comprobando nombre de producto #
+		    
 		    if($datos['producto_nombre']!=$nombre){
 			    $check_nombre=$this->ejecutarConsulta("SELECT producto_nombre FROM producto WHERE producto_codigo='$codigo' AND producto_nombre='$nombre'");
 			    if($check_nombre->rowCount()>=1){
@@ -880,12 +880,12 @@
 		}
 
 
-		/*----------  Controlador eliminar foto producto  ----------*/
+		
 		public function eliminarFotoProductoControlador(){
 
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
-			# Verificando producto #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -900,7 +900,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Directorio de imagenes #
+		    
     		$img_dir="../views/productos/";
 
     		chmod($img_dir,0777);
@@ -964,12 +964,12 @@
 		}
 
 
-		/*----------  Controlador actualizar foto producto  ----------*/
+		
 		public function actualizarFotoProductoControlador(){
 
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
-			# Verificando producto #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -984,10 +984,10 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Directorio de imagenes #
+		    
     		$img_dir="../views/productos/";
 
-    		# Comprobar si se selecciono una imagen #
+    		
     		if($_FILES['producto_foto']['name']=="" && $_FILES['producto_foto']['size']<=0){
     			$alerta=[
 					"tipo"=>"simple",
@@ -999,7 +999,7 @@
 		        exit();
     		}
 
-    		# Creando directorio #
+    		
 	        if(!file_exists($img_dir)){
 	            if(!mkdir($img_dir,0777)){
 	                $alerta=[
@@ -1013,7 +1013,7 @@
 	            } 
 	        }
 
-	        # Verificando formato de imagenes #
+	        
 	        if(mime_content_type($_FILES['producto_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['producto_foto']['tmp_name'])!="image/png"){
 	            $alerta=[
 					"tipo"=>"simple",
@@ -1025,7 +1025,7 @@
 	            exit();
 	        }
 
-	        # Verificando peso de imagen #
+	        
 	        if(($_FILES['producto_foto']['size']/1024)>5120){
 	            $alerta=[
 					"tipo"=>"simple",
@@ -1037,7 +1037,7 @@
 	            exit();
 	        }
 
-	        # Nombre de la foto #
+	        
 	        if($datos['producto_foto']!=""){
 		        $foto=explode(".", $datos['producto_foto']);
 		        $foto=$foto[0];
@@ -1046,7 +1046,7 @@
 	        }
 	        
 
-	        # Extension de la imagen #
+	        
 	        switch(mime_content_type($_FILES['producto_foto']['tmp_name'])){
 	            case 'image/jpeg':
 	                $foto=$foto.".jpg";
@@ -1058,7 +1058,7 @@
 
 	        chmod($img_dir,0777);
 
-	        # Moviendo imagen al directorio #
+	        
 	        if(!move_uploaded_file($_FILES['producto_foto']['tmp_name'],$img_dir.$foto)){
 	            $alerta=[
 					"tipo"=>"simple",
@@ -1070,7 +1070,7 @@
 	            exit();
 	        }
 
-	        # Eliminando imagen anterior #
+	        
 	        if(is_file($img_dir.$datos['producto_foto']) && $datos['producto_foto']!=$foto){
 		        chmod($img_dir.$datos['producto_foto'], 0777);
 		        unlink($img_dir.$datos['producto_foto']);

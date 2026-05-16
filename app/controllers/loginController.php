@@ -5,13 +5,13 @@
 
 	class loginController extends mainModel{
 
-		/*----------  Controlador iniciar sesion  ----------*/
+		
 		public function iniciarSesionControlador(){
 
 			$usuario=$this->limpiarCadena($_POST['login_usuario']);
 		    $clave=$this->limpiarCadena($_POST['login_clave']);
 
-		    # Verificando campos obligatorios #
+		    
 		    if($usuario=="" || $clave==""){
 				echo '<article class="message is-danger">
 				  <div class="message-body">
@@ -21,7 +21,7 @@
 				</article>';
 		    }else{
 
-			    # Verificando integridad de los datos #
+			    
 			    if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$usuario)){
 					echo '<article class="message is-danger">
 					  <div class="message-body">
@@ -31,7 +31,7 @@
 					</article>';
 			    }else{
 
-			    	# Verificando integridad de los datos #
+			    	
 				    if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave)){
 						echo '<article class="message is-danger">
 						  <div class="message-body">
@@ -41,7 +41,7 @@
 						</article>';
 				    }else{
 
-					    # Verificando usuario #
+					    
 					    $check_usuario=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_usuario='$usuario'");
 
 					    if($check_usuario->rowCount()==1){
@@ -87,7 +87,7 @@
 		}
 
 
-		/*----------  Controlador cerrar sesion  ----------*/
+		
 		public function cerrarSesionControlador(){
 
 			session_destroy();

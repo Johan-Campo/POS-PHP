@@ -5,14 +5,14 @@
 
 	class categoryController extends mainModel{
 
-		/*----------  Controlador registrar categoria  ----------*/
+		
 		public function registrarCategoriaControlador(){
 
-			# Almacenando datos#
+			
 		    $nombre=$this->limpiarCadena($_POST['categoria_nombre']);
 		    $ubicacion=$this->limpiarCadena($_POST['categoria_ubicacion']);
 
-		    # Verificando campos obligatorios #
+		    
             if($nombre==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -24,7 +24,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{4,50}",$nombre)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -49,7 +49,7 @@
 			    }
 		    }
 
-		    # Verificando nombre #
+		    
 		    $check_nombre=$this->ejecutarConsulta("SELECT categoria_nombre FROM categoria WHERE categoria_nombre='$nombre'");
 		    if($check_nombre->rowCount()>0){
 		    	$alerta=[
@@ -98,7 +98,7 @@
 		}
 
 
-		/*----------  Controlador listar categoria  ----------*/
+		
 		public function listarCategoriaControlador($pagina,$registros,$url,$busqueda){
 
 			$pagina=$this->limpiarCadena($pagina);
@@ -162,12 +162,12 @@
 							<td>'.$rows['categoria_ubicacion'].'</td>
 							<td>
 			                    <a href="'.APP_URL.'productCategory/'.$rows['categoria_id'].'/" class="button is-info is-rounded is-small">
-			                    	<i class="fas fa-boxes fa-fw"></i>
+			                    	<i class="ri-inbox-line"></i>
 			                    </a>
 			                </td>
 			                <td>
 			                    <a href="'.APP_URL.'categoryUpdate/'.$rows['categoria_id'].'/" class="button is-success is-rounded is-small">
-			                    	<i class="fas fa-sync fa-fw"></i>
+			                    	<i class="ri-refresh-line"></i>
 			                    </a>
 			                </td>
 			                <td>
@@ -177,7 +177,7 @@
 			                		<input type="hidden" name="categoria_id" value="'.$rows['categoria_id'].'">
 
 			                    	<button type="submit" class="button is-danger is-rounded is-small">
-			                    		<i class="far fa-trash-alt fa-fw"></i>
+			                    		<i class="ri-delete-bin-line"></i>
 			                    	</button>
 			                    </form>
 			                </td>
@@ -210,7 +210,7 @@
 
 			$tabla.='</tbody></table></div>';
 
-			### Paginacion ###
+			
 			if($total>0 && $pagina<=$numeroPaginas){
 				$tabla.='<p class="has-text-right">Mostrando categorías <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>';
 
@@ -221,12 +221,12 @@
 		}
 
 
-		/*----------  Controlador eliminar categoria  ----------*/
+		
 		public function eliminarCategoriaControlador(){
 
 			$id=$this->limpiarCadena($_POST['categoria_id']);
 
-			# Verificando categoria #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM categoria WHERE categoria_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -241,7 +241,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Verificando productos #
+		    
 		    $check_productos=$this->ejecutarConsulta("SELECT categoria_id FROM producto WHERE categoria_id='$id' LIMIT 1");
 		    if($check_productos->rowCount()>0){
 		        $alerta=[
@@ -278,12 +278,12 @@
 		}
 
 
-		/*----------  Controlador actualizar categoria  ----------*/
+		
 		public function actualizarCategoriaControlador(){
 
 			$id=$this->limpiarCadena($_POST['categoria_id']);
 
-			# Verificando categoria #
+			
 		    $datos=$this->ejecutarConsulta("SELECT * FROM categoria WHERE categoria_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -298,11 +298,11 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Almacenando datos#
+		    
 		    $nombre=$this->limpiarCadena($_POST['categoria_nombre']);
 		    $ubicacion=$this->limpiarCadena($_POST['categoria_ubicacion']);
 
-		    # Verificando campos obligatorios #
+		    
             if($nombre==""){
             	$alerta=[
 					"tipo"=>"simple",
@@ -314,7 +314,7 @@
 		        exit();
             }
 
-            # Verificando integridad de los datos #
+            
 		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{4,50}",$nombre)){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -339,7 +339,7 @@
 			    }
 		    }
 
-		    # Verificando nombre #
+		    
 		    if($datos['categoria_nombre']!=$nombre){
 			    $check_nombre=$this->ejecutarConsulta("SELECT categoria_nombre FROM categoria WHERE categoria_nombre='$nombre'");
 			    if($check_nombre->rowCount()>0){
