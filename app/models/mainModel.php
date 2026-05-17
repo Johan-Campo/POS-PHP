@@ -10,14 +10,20 @@
 	class mainModel{
 
 		private $server=DB_SERVER;
+		private $port=DB_PORT;
 		private $db=DB_NAME;
 		private $user=DB_USER;
 		private $pass=DB_PASS;
 
 
-		
+
 		protected function conectar(){
-			$conexion = new PDO("mysql:host=".$this->server.";dbname=".$this->db,$this->user,$this->pass);
+			$dsn = "mysql:host={$this->server};port={$this->port};dbname={$this->db}";
+			$options = [
+				PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+			];
+			$conexion = new PDO($dsn, $this->user, $this->pass, $options);
 			$conexion->exec("SET CHARACTER SET utf8");
 			return $conexion;
 		}

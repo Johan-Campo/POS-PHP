@@ -1,6 +1,6 @@
 <?php
 
-	const APP_URL="http://localhost/MiniVend/";
+	const APP_URL = $_ENV['APP_URL'] ?? 'http://localhost/';
 	const APP_NAME="MiniVend";
 	const APP_SESSION_NAME="MINIVEND";
 
@@ -14,6 +14,6 @@
 	const MONEDA_SEPARADOR_MILLAR=",";
 	const MONEDA_SEPARADOR_DECIMAL=".";
 
-	const CAMPO_OBLIGATORIO='&nbsp; <i class="fas fa-edit"></i> &nbsp;';
+	const CAMPO_OBLIGATORIO='&nbsp; <i class="ri-edit-line"></i> &nbsp;';
 
 	date_default_timezone_set("America/El_Salvador");
