@@ -16,7 +16,7 @@ try {
 
 $sql = file_get_contents(__DIR__.'/DB/ventas.sql');
 
-// Eliminar líneas de comentarios -- antes de dividir por ;
+// Eliminar líneas de comentarios --
 $lineas = explode("\n", $sql);
 $lineasLimpias = [];
 foreach ($lineas as $linea) {
@@ -26,7 +26,9 @@ foreach ($lineas as $linea) {
 }
 $sql = implode("\n", $lineasLimpias);
 
+// Deshabilitar restricciones de Aiven
 $pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+$pdo->exec("SET sql_require_primary_key=0");
 
 $sentencias = array_filter(array_map('trim', explode(';', $sql)));
 $ok = 0;
