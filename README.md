@@ -45,17 +45,31 @@ MiniVend fue construido específicamente para resolver estos problemas. Reemplaz
 
 ---
 
+## Demo en vivo
+
+**[https://pos-php.onrender.com](https://pos-php.onrender.com)**
+
+| Campo | Valor |
+|---|---|
+| Usuario | `Administrador` |
+| Contraseña | `Administrador` |
+
+> El servicio usa el plan gratuito de Render — si no carga de inmediato, espera ~30 segundos mientras el servidor despierta.
+
+---
+
 ## Stack tecnológico
 
 | Capa | Tecnología |
 |---|---|
-| Backend | PHP |
+| Backend | PHP 8.2 |
 | Arquitectura | MVC (Modelo-Vista-Controlador) |
 | Base de datos | MySQL / MariaDB |
 | Frontend | Bulma CSS, Remix Icons, Inter (Google Fonts) |
 | AJAX | Vanilla JS + Fetch API |
 | PDF | Librería FPDF |
-| Servidor | Apache (con mod_rewrite) |
+| Servidor local | Apache (con mod_rewrite) |
+| Servidor producción | PHP Built-in Server (via Docker) |
 
 ---
 
@@ -65,7 +79,7 @@ MiniVend fue construido específicamente para resolver estos problemas. Reemplaz
 MiniVend/
 ├── config/
 │   ├── app.php          # URL, nombre de la app, moneda, zona horaria
-│   └── server.php       # Credenciales de la base de datos
+│   └── server.php       # Credenciales de la base de datos (usa variables de entorno en producción)
 ├── app/
 │   ├── models/          # mainModel (abstracción DB), viewsModel (enrutamiento)
 │   ├── controllers/     # Un controlador por módulo
@@ -76,9 +90,11 @@ MiniVend/
 │   └── pdf/             # Generadores de facturas y tickets (FPDF)
 ├── DB/
 │   └── ventas.sql       # Esquema completo de base de datos + datos iniciales
-├── index.php            # Controlador frontal / router
+├── Dockerfile           # Imagen Docker para despliegue en producción
+├── router.php           # Router para el servidor built-in de PHP (producción)
+├── index.php            # Controlador frontal
 ├── autoload.php         # Autocargador de clases
-└── .htaccess            # Reglas de reescritura de URL
+└── .htaccess            # Reglas de reescritura de URL (desarrollo local con Apache)
 ```
 
 ---
@@ -185,6 +201,52 @@ Contraseña: Administrador
 ```
 
 Estas credenciales están incluidas en la base de datos al importarla. Cámbialas inmediatamente después de la configuración.
+
+---
+
+## Despliegue en producción
+
+El proyecto está containerizado con Docker y desplegado en **[Render](https://render.com)** (plan gratuito) con **[Aiven](https://aiven.io)** como proveedor de base de datos MySQL.
+
+### Infraestructura
+
+| Componente | Servicio |
+|---|---|
+| Aplicación | Render — Web Service (Docker, Free tier) |
+| Base de datos | Aiven — MySQL 8.4 (Free tier) |
+| Contenedor | PHP 8.2 CLI + servidor built-in |
+| Dominio | `pos-php.onrender.com` (generado por Render) |
+
+### Variables de entorno requeridas
+
+Configura estas variables en el panel de tu servicio en Render:
+
+```
+DB_SERVER   → host de la base de datos MySQL
+DB_PORT     → puerto de la base de datos (Aiven usa 22942)
+DB_NAME     → nombre de la base de datos
+DB_USER     → usuario de la base de datos
+DB_PASS     → contraseña de la base de datos
+APP_URL     → URL pública del servicio (ej. https://pos-php.onrender.com/)
+```
+
+### Cómo funciona el routing en producción
+
+En desarrollo local el routing lo maneja Apache via `.htaccess`. En producción, el Dockerfile arranca PHP con su servidor built-in usando `router.php` como punto de entrada:
+
+```
+php -S 0.0.0.0:10000 router.php
+```
+
+`router.php` replica el comportamiento del `.htaccess`: sirve archivos estáticos directamente y pasa las rutas como parámetro `?views=` a `index.php`.
+
+### Desplegar tu propia instancia
+
+1. Haz fork del repositorio
+2. Crea una base de datos MySQL en [Aiven](https://aiven.io) e importa `DB/ventas.sql`
+3. Crea un **Web Service** en [Render](https://render.com) → conecta tu repositorio → elige **Docker**
+4. Agrega las variables de entorno listadas arriba
+5. Render desplegará automáticamente en cada push a `main`
 
 ---
 
