@@ -1,6 +1,6 @@
 <?php
 
-	const APP_URL = $_ENV['APP_URL'] ?? 'http://localhost/';
+	define('APP_URL', $_ENV['APP_URL'] ?? 'http://localhost/');
 	const APP_NAME="MiniVend";
 	const APP_SESSION_NAME="MINIVEND";
 
