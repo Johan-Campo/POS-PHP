@@ -16,14 +16,24 @@ try {
 
 $sql = file_get_contents(__DIR__.'/DB/ventas.sql');
 
-// Separar en sentencias individuales
-$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
-$sentencias = array_filter(array_map('trim', explode(';', $sql)));
+// Eliminar líneas de comentarios -- antes de dividir por ;
+$lineas = explode("\n", $sql);
+$lineasLimpias = [];
+foreach ($lineas as $linea) {
+    $t = trim($linea);
+    if ($t === '' || str_starts_with($t, '--')) continue;
+    $lineasLimpias[] = $linea;
+}
+$sql = implode("\n", $lineasLimpias);
 
+$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+
+$sentencias = array_filter(array_map('trim', explode(';', $sql)));
 $ok = 0;
 $errores = [];
+
 foreach ($sentencias as $s) {
-    if (empty($s) || str_starts_with($s, '--') || str_starts_with($s, '/*')) continue;
+    if (empty($s)) continue;
     try {
         $pdo->exec($s);
         $ok++;
@@ -31,12 +41,13 @@ foreach ($sentencias as $s) {
         $errores[] = $e->getMessage();
     }
 }
+
 $pdo->exec("SET FOREIGN_KEY_CHECKS=1");
 
 echo "<h2>Importación completada</h2>";
 echo "<p>Sentencias ejecutadas: <strong>$ok</strong></p>";
 if ($errores) {
-    echo "<p>Advertencias:</p><ul>";
+    echo "<p>Advertencias (" . count($errores) . "):</p><ul>";
     foreach ($errores as $e) echo "<li>$e</li>";
     echo "</ul>";
 }
