@@ -13,7 +13,16 @@
 
         <?php
             if(isset($_POST['login_usuario']) && isset($_POST['login_clave'])){
-                $insLogin->iniciarSesionControlador();
+                try {
+                    $insLogin->iniciarSesionControlador();
+                } catch (Exception $e) {
+                    echo '<article class="message is-danger">
+                      <div class="message-body">
+                        <strong>Ocurrió un error inesperado</strong><br>
+                        '.$e->getMessage().'
+                      </div>
+                    </article>';
+                }
             }
         ?>
 

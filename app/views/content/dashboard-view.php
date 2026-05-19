@@ -2,7 +2,8 @@
     $total_cajas      = $insLogin->ejecutarConsulta("SELECT COUNT(caja_id) as total FROM caja");
     $total_cajas      = (int)$total_cajas->fetchColumn();
 
-    $total_usuarios   = $insLogin->ejecutarConsulta("SELECT COUNT(usuario_id) as total FROM usuario WHERE usuario_id!='1' AND usuario_id!='".$_SESSION['id']."'");
+    $session_id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
+    $total_usuarios   = $insLogin->consultaSegura("SELECT COUNT(usuario_id) as total FROM usuario WHERE usuario_id!='1' AND usuario_id!=:SessionID", [":SessionID"=>$session_id]);
     $total_usuarios   = (int)$total_usuarios->fetchColumn();
 
     $total_clientes   = $insLogin->ejecutarConsulta("SELECT COUNT(cliente_id) as total FROM cliente WHERE cliente_id!='1'");
@@ -86,7 +87,7 @@
     </div>
 
     <p style="font-size:14px;color:var(--color-muted);margin-bottom:28px;">
-        Bienvenido, <strong><?php echo $_SESSION['nombre']." ".$_SESSION['apellido']; ?></strong>.
+        Bienvenido, <strong><?php echo htmlspecialchars((isset($_SESSION['nombre'])?$_SESSION['nombre']:'')." ".(isset($_SESSION['apellido'])?$_SESSION['apellido']:'')); ?></strong>.
         Aquí tienes un resumen actualizado del sistema.
     </p>
 

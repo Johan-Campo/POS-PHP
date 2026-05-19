@@ -27,7 +27,7 @@
             }
 
             
-            $datos_productos=$this->ejecutarConsulta("SELECT * FROM producto WHERE (producto_nombre LIKE '%$producto%' OR producto_marca LIKE '%$producto%' OR producto_modelo LIKE '%$producto%') ORDER BY producto_nombre ASC");
+            $datos_productos=$this->consultaSegura("SELECT * FROM producto WHERE (producto_nombre LIKE :Producto OR producto_marca LIKE :Producto OR producto_modelo LIKE :Producto) ORDER BY producto_nombre ASC", [":Producto"=>"%$producto%"]);
 
             if($datos_productos->rowCount()>=1){
 
@@ -94,7 +94,7 @@
             }
 
             
-            $check_producto=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_codigo='$codigo'");
+            $check_producto=$this->consultaSegura("SELECT * FROM producto WHERE producto_codigo=:Codigo", [":Codigo"=>$codigo]);
             if($check_producto->rowCount()<=0){
                 $alerta=[
 					"tipo"=>"simple",
@@ -247,7 +247,7 @@
             }
 
             
-            $check_producto=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_codigo='$codigo'");
+            $check_producto=$this->consultaSegura("SELECT * FROM producto WHERE producto_codigo=:Codigo", [":Codigo"=>$codigo]);
             if($check_producto->rowCount()<=0){
                 $alerta=[
 					"tipo"=>"simple",
@@ -354,7 +354,7 @@
             }
 
             
-            $datos_cliente=$this->ejecutarConsulta("SELECT * FROM cliente WHERE (cliente_id!='1') AND (cliente_numero_documento LIKE '%$cliente%' OR cliente_nombre LIKE '%$cliente%' OR cliente_apellido LIKE '%$cliente%' OR cliente_telefono LIKE '%$cliente%') ORDER BY cliente_nombre ASC");
+            $datos_cliente=$this->consultaSegura("SELECT * FROM cliente WHERE (cliente_id!='1') AND (cliente_numero_documento LIKE :Cliente OR cliente_nombre LIKE :Cliente OR cliente_apellido LIKE :Cliente OR cliente_telefono LIKE :Cliente) ORDER BY cliente_nombre ASC", [":Cliente"=>"%$cliente%"]);
 
             if($datos_cliente->rowCount()>=1){
 
@@ -398,7 +398,7 @@
 			$id=$this->limpiarCadena($_POST['cliente_id']);
 
 			
-			$check_cliente=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+			$check_cliente=$this->consultaSegura("SELECT * FROM cliente WHERE cliente_id=:Id", [":Id"=>$id]);
 			if($check_cliente->rowCount()<=0){
 				$alerta=[
 					"tipo"=>"simple",
@@ -412,7 +412,7 @@
 				$campos=$check_cliente->fetch();
             }
 
-			if($_SESSION['datos_cliente_venta']['cliente_id']==1){
+			if(isset($_SESSION['datos_cliente_venta']['cliente_id']) && $_SESSION['datos_cliente_venta']['cliente_id']==1){
                 $_SESSION['datos_cliente_venta']=[
                     "cliente_id"=>$campos['cliente_id'],
                     "cliente_tipo_documento"=>$campos['cliente_tipo_documento'],
@@ -481,7 +481,8 @@
 		        exit();
             }
 
-            if($_SESSION['venta_total']<=0 || (!isset($_SESSION['datos_producto_venta']) && count($_SESSION['datos_producto_venta'])<=0)){
+            $productos_venta = $_SESSION['datos_producto_venta'] ?? [];
+            if(($_SESSION['venta_total'] ?? 0) <= 0 || count($productos_venta) <= 0){
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -505,7 +506,7 @@
 
 
             
-			$check_cliente=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_id='".$_SESSION['datos_cliente_venta']['cliente_id']."'");
+			$check_cliente=$this->consultaSegura("SELECT cliente_id FROM cliente WHERE cliente_id=:ClienteId", [":ClienteId"=>($_SESSION['datos_cliente_venta']['cliente_id'] ?? 0)]);
 			if($check_cliente->rowCount()<=0){
 				$alerta=[
 					"tipo"=>"simple",
@@ -519,7 +520,7 @@
 
 
             
-            $check_caja=$this->ejecutarConsulta("SELECT * FROM caja WHERE caja_id='$caja'");
+            $check_caja=$this->consultaSegura("SELECT * FROM caja WHERE caja_id=:Caja", [":Caja"=>$caja]);
 			if($check_caja->rowCount()<=0){
 				$alerta=[
 					"tipo"=>"simple",
@@ -574,7 +575,7 @@
 			foreach($_SESSION['datos_producto_venta'] as $productos){
 
                 
-                $check_producto=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='".$productos['producto_id']."' AND producto_codigo='".$productos['producto_codigo']."'");
+                $check_producto=$this->consultaSegura("SELECT * FROM producto WHERE producto_id=:ProductoId AND producto_codigo=:ProductoCodigo", [":ProductoId"=>$productos['producto_id'], ":ProductoCodigo"=>$productos['producto_codigo']]);
                 if($check_producto->rowCount()<1){
                     $errores_productos=1;
                     break;
@@ -681,12 +682,12 @@
 				[
 					"campo_nombre"=>"usuario_id",
 					"campo_marcador"=>":Usuario",
-					"campo_valor"=>$_SESSION['id']
+					"campo_valor"=>$_SESSION['id'] ?? 0
 				],
 				[
 					"campo_nombre"=>"cliente_id",
 					"campo_marcador"=>":Cliente",
-					"campo_valor"=>$_SESSION['datos_cliente_venta']['cliente_id']
+					"campo_valor"=>($_SESSION['datos_cliente_venta']['cliente_id'] ?? 0)
 				],
 				[
 					"campo_nombre"=>"caja_id",
@@ -901,9 +902,9 @@
 
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT $campos_tablas FROM venta INNER JOIN cliente ON venta.cliente_id=cliente.cliente_id INNER JOIN usuario ON venta.usuario_id=usuario.usuario_id WHERE (venta.venta_codigo='$busqueda') ORDER BY venta.venta_id DESC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT $campos_tablas FROM venta INNER JOIN cliente ON venta.cliente_id=cliente.cliente_id INNER JOIN usuario ON venta.usuario_id=usuario.usuario_id WHERE (venta.venta_codigo=:Busqueda) ORDER BY venta.venta_id DESC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(venta_id) FROM venta WHERE (venta.venta_codigo='$busqueda')";
+				$consulta_total="SELECT COUNT(venta_id) FROM venta WHERE (venta.venta_codigo=:Busqueda)";
 
 			}else{
 
@@ -913,10 +914,18 @@
 
 			}
 
-			$datos = $this->ejecutarConsulta($consulta_datos);
+			if(isset($busqueda) && $busqueda!=""){
+				$datos = $this->consultaSegura($consulta_datos, [":Busqueda"=>$busqueda]);
+			}else{
+				$datos = $this->ejecutarConsulta($consulta_datos);
+			}
 			$datos = $datos->fetchAll();
 
-			$total = $this->ejecutarConsulta($consulta_total);
+			if(isset($busqueda) && $busqueda!=""){
+				$total = $this->consultaSegura($consulta_total, [":Busqueda"=>$busqueda]);
+			}else{
+				$total = $this->ejecutarConsulta($consulta_total);
+			}
 			$total = (int) $total->fetchColumn();
 
 			$numeroPaginas =ceil($total/$registros);
@@ -1021,7 +1030,7 @@
 			$id=$this->limpiarCadena($_POST['venta_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM venta WHERE venta_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM venta WHERE venta_id=:Id", [":Id"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -1036,7 +1045,7 @@
 		    }
 
 		    
-		    $check_detalle_venta=$this->ejecutarConsulta("SELECT venta_detalle_id FROM venta_detalle WHERE venta_codigo='".$datos['venta_codigo']."'");
+		    $check_detalle_venta=$this->consultaSegura("SELECT venta_detalle_id FROM venta_detalle WHERE venta_codigo=:VentaCodigo", [":VentaCodigo"=>$datos['venta_codigo']]);
 		    $check_detalle_venta=$check_detalle_venta->rowCount();
 
 		    if($check_detalle_venta>0){

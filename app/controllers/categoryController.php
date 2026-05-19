@@ -50,7 +50,7 @@
 		    }
 
 		    
-		    $check_nombre=$this->ejecutarConsulta("SELECT categoria_nombre FROM categoria WHERE categoria_nombre='$nombre'");
+		    $check_nombre=$this->consultaSegura("SELECT categoria_nombre FROM categoria WHERE categoria_nombre=:Nombre", [":Nombre"=>$nombre]);
 		    if($check_nombre->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -115,9 +115,12 @@
 
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT * FROM categoria WHERE categoria_nombre LIKE '%$busqueda%' OR categoria_ubicacion LIKE '%$busqueda%' ORDER BY categoria_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM categoria WHERE categoria_nombre LIKE :Busqueda OR categoria_ubicacion LIKE :Busqueda ORDER BY categoria_nombre ASC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(categoria_id) FROM categoria WHERE categoria_nombre LIKE '%$busqueda%' OR categoria_ubicacion LIKE '%$busqueda%'";
+				$consulta_total="SELECT COUNT(categoria_id) FROM categoria WHERE categoria_nombre LIKE :Busqueda OR categoria_ubicacion LIKE :Busqueda";
+
+				$datos = $this->consultaSegura($consulta_datos, [":Busqueda"=>"%$busqueda%"]);
+				$total = $this->consultaSegura($consulta_total, [":Busqueda"=>"%$busqueda%"]);
 
 			}else{
 
@@ -125,12 +128,13 @@
 
 				$consulta_total="SELECT COUNT(categoria_id) FROM categoria";
 
+				$datos = $this->ejecutarConsulta($consulta_datos);
+				$total = $this->ejecutarConsulta($consulta_total);
+
 			}
 
-			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 
-			$total = $this->ejecutarConsulta($consulta_total);
 			$total = (int) $total->fetchColumn();
 
 			$numeroPaginas =ceil($total/$registros);
@@ -227,7 +231,7 @@
 			$id=$this->limpiarCadena($_POST['categoria_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM categoria WHERE categoria_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM categoria WHERE categoria_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -242,7 +246,7 @@
 		    }
 
 		    
-		    $check_productos=$this->ejecutarConsulta("SELECT categoria_id FROM producto WHERE categoria_id='$id' LIMIT 1");
+		    $check_productos=$this->consultaSegura("SELECT categoria_id FROM producto WHERE categoria_id=:ID LIMIT 1", [":ID"=>$id]);
 		    if($check_productos->rowCount()>0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -284,7 +288,7 @@
 			$id=$this->limpiarCadena($_POST['categoria_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM categoria WHERE categoria_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM categoria WHERE categoria_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -341,7 +345,7 @@
 
 		    
 		    if($datos['categoria_nombre']!=$nombre){
-			    $check_nombre=$this->ejecutarConsulta("SELECT categoria_nombre FROM categoria WHERE categoria_nombre='$nombre'");
+			    $check_nombre=$this->consultaSegura("SELECT categoria_nombre FROM categoria WHERE categoria_nombre=:Nombre", [":Nombre"=>$nombre]);
 			    if($check_nombre->rowCount()>0){
 			    	$alerta=[
 						"tipo"=>"simple",

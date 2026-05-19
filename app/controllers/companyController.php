@@ -131,7 +131,7 @@
 			$id=$this->limpiarCadena($_POST['empresa_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM empresa WHERE empresa_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM empresa WHERE empresa_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",

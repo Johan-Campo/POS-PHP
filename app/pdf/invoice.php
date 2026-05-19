@@ -11,7 +11,7 @@
 	use app\controllers\saleController;
 	$ins_venta = new saleController();
 
-	$datos_venta=$ins_venta->seleccionarDatos("Normal","venta INNER JOIN cliente ON venta.cliente_id=cliente.cliente_id INNER JOIN usuario ON venta.usuario_id=usuario.usuario_id INNER JOIN caja ON venta.caja_id=caja.caja_id WHERE (venta_codigo='$code')","*",0);
+	$datos_venta=$ins_venta->consultaSegura("SELECT * FROM venta INNER JOIN cliente ON venta.cliente_id=cliente.cliente_id INNER JOIN usuario ON venta.usuario_id=usuario.usuario_id INNER JOIN caja ON venta.caja_id=caja.caja_id WHERE venta.venta_codigo=:Codigo", [":Codigo"=>$code]);
 
 	if($datos_venta->rowCount()==1){
 
@@ -136,7 +136,7 @@
 		$pdf->SetTextColor(39,39,51);
 
 		
-		$venta_detalle=$ins_venta->seleccionarDatos("Normal","venta_detalle WHERE venta_codigo='".$datos_venta['venta_codigo']."'","*",0);
+		$venta_detalle=$ins_venta->consultaSegura("SELECT * FROM venta_detalle WHERE venta_codigo=:Codigo", [":Codigo"=>$datos_venta['venta_codigo']]);
 		$venta_detalle=$venta_detalle->fetchAll();
 
 		foreach($venta_detalle as $detalle){

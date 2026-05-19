@@ -7,15 +7,16 @@
 
     <div class="sidebar-profile">
         <?php
-            if(is_file("./app/views/fotos/".$_SESSION['foto'])){
-                echo '<img class="sidebar-profile-img" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto'].'" alt="foto">';
+            $sidebar_foto = isset($_SESSION['foto']) ? $_SESSION['foto'] : '';
+            if(is_file("./app/views/fotos/".$sidebar_foto)){
+                echo '<img class="sidebar-profile-img" src="'.APP_URL.'app/views/fotos/'.$sidebar_foto.'" alt="foto">';
             }else{
                 echo '<img class="sidebar-profile-img" src="'.APP_URL.'app/views/fotos/default.svg" alt="foto">';
             }
         ?>
         <div class="sidebar-profile-info">
-            <div class="sidebar-profile-name"><?php echo $_SESSION['nombre']." ".$_SESSION['apellido']; ?></div>
-            <div class="sidebar-profile-user"><?php echo $_SESSION['usuario']; ?></div>
+            <div class="sidebar-profile-name"><?php echo htmlspecialchars((isset($_SESSION['nombre'])?$_SESSION['nombre']:'')." ".(isset($_SESSION['apellido'])?$_SESSION['apellido']:'')); ?></div>
+            <div class="sidebar-profile-user"><?php echo htmlspecialchars(isset($_SESSION['usuario'])?$_SESSION['usuario']:'Usuario'); ?></div>
         </div>
     </div>
 
@@ -210,12 +211,12 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo APP_URL."userUpdate/".$_SESSION['id']."/"; ?>">
+                        <a href="<?php echo APP_URL."userUpdate/".(isset($_SESSION['id'])?$_SESSION['id']:0)."/"; ?>">
                             <i class="ri-user-settings-line menu-icon"></i> Mi cuenta
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo APP_URL."userPhoto/".$_SESSION['id']."/"; ?>">
+                        <a href="<?php echo APP_URL."userPhoto/".(isset($_SESSION['id'])?$_SESSION['id']:0)."/"; ?>">
                             <i class="ri-camera-line menu-icon"></i> Mi foto
                         </a>
                     </li>

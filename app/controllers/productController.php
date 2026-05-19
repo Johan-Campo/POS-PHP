@@ -128,7 +128,7 @@
 			}
 
 			
-		    $check_categoria=$this->ejecutarConsulta("SELECT categoria_id FROM categoria WHERE categoria_id='$categoria'");
+		    $check_categoria=$this->consultaSegura("SELECT categoria_id FROM categoria WHERE categoria_id=:Categoria", [":Categoria"=>$categoria]);
 		    if($check_categoria->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -191,7 +191,7 @@
 			}
 
 			
-		    $check_codigo=$this->ejecutarConsulta("SELECT producto_codigo FROM producto WHERE producto_codigo='$codigo'");
+		    $check_codigo=$this->consultaSegura("SELECT producto_codigo FROM producto WHERE producto_codigo=:Codigo", [":Codigo"=>$codigo]);
 		    if($check_codigo->rowCount()>=1){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -204,7 +204,7 @@
 		    }
 
 		    
-		    $check_nombre=$this->ejecutarConsulta("SELECT producto_nombre FROM producto WHERE producto_codigo='$codigo' AND producto_nombre='$nombre'");
+		    $check_nombre=$this->consultaSegura("SELECT producto_nombre FROM producto WHERE producto_codigo=:Codigo AND producto_nombre=:Nombre", [":Codigo"=>$codigo, ":Nombre"=>$nombre]);
 		    if($check_nombre->rowCount()>=1){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -224,7 +224,7 @@
 
     			
 		        if(!file_exists($img_dir)){
-		            if(!mkdir($img_dir,0777)){
+		            if(!mkdir($img_dir,0755)){
 		            	$alerta=[
 							"tipo"=>"simple",
 							"titulo"=>"Ocurrió un error inesperado",
@@ -273,7 +273,7 @@
 		            break;
 		        }
 
-		        chmod($img_dir,0777);
+		        chmod($img_dir,0755);
 
 		        
 		        if(!move_uploaded_file($_FILES['producto_foto']['tmp_name'],$img_dir.$foto)){
@@ -361,7 +361,7 @@
 			}else{
 				
 				if(is_file($img_dir.$foto)){
-		            chmod($img_dir.$foto,0777);
+		            chmod($img_dir.$foto,0755);
 		            unlink($img_dir.$foto);
 		        }
 
@@ -401,28 +401,34 @@
 
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT $campos FROM producto INNER JOIN categoria ON producto.categoria_id=categoria.categoria_id WHERE producto_codigo LIKE '%$busqueda%' OR producto_nombre LIKE '%$busqueda%' OR producto_marca LIKE '%$busqueda%' OR producto_modelo LIKE '%$busqueda%' ORDER BY producto_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT $campos FROM producto INNER JOIN categoria ON producto.categoria_id=categoria.categoria_id WHERE producto_codigo LIKE :Busqueda OR producto_nombre LIKE :Busqueda OR producto_marca LIKE :Busqueda OR producto_modelo LIKE :Busqueda ORDER BY producto_nombre ASC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(producto_id) FROM producto WHERE producto_codigo LIKE '%$busqueda%' OR producto_nombre LIKE '%$busqueda%' OR producto_marca LIKE '%$busqueda%' OR producto_modelo LIKE '%$busqueda%'";
+				$consulta_total="SELECT COUNT(producto_id) FROM producto WHERE producto_codigo LIKE :Busqueda OR producto_nombre LIKE :Busqueda OR producto_marca LIKE :Busqueda OR producto_modelo LIKE :Busqueda";
+
+				$parametros=[":Busqueda"=>"%$busqueda%"];
 
 			}elseif($categoria>0){
 
-		        $consulta_datos="SELECT $campos FROM producto INNER JOIN categoria ON producto.categoria_id=categoria.categoria_id WHERE producto.categoria_id='$categoria' ORDER BY producto.producto_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT $campos FROM producto INNER JOIN categoria ON producto.categoria_id=categoria.categoria_id WHERE producto.categoria_id=:Categoria ORDER BY producto.producto_nombre ASC LIMIT $inicio,$registros";
 
-		        $consulta_total="SELECT COUNT(producto_id) FROM producto WHERE categoria_id='$categoria'";
+				$consulta_total="SELECT COUNT(producto_id) FROM producto WHERE categoria_id=:Categoria";
 
-		    }else{
+				$parametros=[":Categoria"=>$categoria];
+
+			}else{
 
 				$consulta_datos="SELECT $campos FROM producto INNER JOIN categoria ON producto.categoria_id=categoria.categoria_id ORDER BY producto_nombre ASC LIMIT $inicio,$registros";
 
 				$consulta_total="SELECT COUNT(producto_id) FROM producto";
 
+				$parametros=[];
+
 			}
 
-			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $this->consultaSegura($consulta_datos,$parametros);
 			$datos = $datos->fetchAll();
 
-			$total = $this->ejecutarConsulta($consulta_total);
+			$total = $this->consultaSegura($consulta_total,$parametros);
 			$total = (int) $total->fetchColumn();
 
 			$numeroPaginas =ceil($total/$registros);
@@ -515,7 +521,7 @@
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM producto WHERE producto_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -530,7 +536,7 @@
 		    }
 
 		    
-		    $check_ventas=$this->ejecutarConsulta("SELECT producto_id FROM venta_detalle WHERE producto_id='$id' LIMIT 1");
+		    $check_ventas=$this->consultaSegura("SELECT producto_id FROM venta_detalle WHERE producto_id=:ID LIMIT 1", [":ID"=>$id]);
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -547,7 +553,7 @@
 		    if($eliminarProducto->rowCount()==1){
 
 		    	if(is_file("../views/productos/".$datos['producto_foto'])){
-		            chmod("../views/productos/".$datos['producto_foto'],0777);
+		            chmod("../views/productos/".$datos['producto_foto'],0755);
 		            unlink("../views/productos/".$datos['producto_foto']);
 		        }
 
@@ -577,7 +583,7 @@
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM producto WHERE producto_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -712,7 +718,7 @@
 
 			
 			if($datos['categoria_id']!=$categoria){
-			    $check_categoria=$this->ejecutarConsulta("SELECT categoria_id FROM categoria WHERE categoria_id='$categoria'");
+			    $check_categoria=$this->consultaSegura("SELECT categoria_id FROM categoria WHERE categoria_id=:Categoria", [":Categoria"=>$categoria]);
 			    if($check_categoria->rowCount()<=0){
 			        $alerta=[
 						"tipo"=>"simple",
@@ -777,7 +783,7 @@
 
 			
 			if($datos['producto_codigo']!=$codigo){
-			    $check_codigo=$this->ejecutarConsulta("SELECT producto_codigo FROM producto WHERE producto_codigo='$codigo'");
+			    $check_codigo=$this->consultaSegura("SELECT producto_codigo FROM producto WHERE producto_codigo=:Codigo", [":Codigo"=>$codigo]);
 			    if($check_codigo->rowCount()>=1){
 			        $alerta=[
 						"tipo"=>"simple",
@@ -792,7 +798,7 @@
 
 		    
 		    if($datos['producto_nombre']!=$nombre){
-			    $check_nombre=$this->ejecutarConsulta("SELECT producto_nombre FROM producto WHERE producto_codigo='$codigo' AND producto_nombre='$nombre'");
+			    $check_nombre=$this->consultaSegura("SELECT producto_nombre FROM producto WHERE producto_codigo=:Codigo AND producto_nombre=:Nombre", [":Codigo"=>$codigo, ":Nombre"=>$nombre]);
 			    if($check_nombre->rowCount()>=1){
 			        $alerta=[
 						"tipo"=>"simple",
@@ -886,7 +892,7 @@
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM producto WHERE producto_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -903,11 +909,11 @@
 		    
     		$img_dir="../views/productos/";
 
-    		chmod($img_dir,0777);
+    		chmod($img_dir,0755);
 
     		if(is_file($img_dir.$datos['producto_foto'])){
 
-		        chmod($img_dir.$datos['producto_foto'],0777);
+		        chmod($img_dir.$datos['producto_foto'],0755);
 
 		        if(!unlink($img_dir.$datos['producto_foto'])){
 		            $alerta=[
@@ -970,7 +976,7 @@
 			$id=$this->limpiarCadena($_POST['producto_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM producto WHERE producto_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM producto WHERE producto_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -1001,7 +1007,7 @@
 
     		
 	        if(!file_exists($img_dir)){
-	            if(!mkdir($img_dir,0777)){
+	            if(!mkdir($img_dir,0755)){
 	                $alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -1056,7 +1062,7 @@
 	            break;
 	        }
 
-	        chmod($img_dir,0777);
+	        chmod($img_dir,0755);
 
 	        
 	        if(!move_uploaded_file($_FILES['producto_foto']['tmp_name'],$img_dir.$foto)){

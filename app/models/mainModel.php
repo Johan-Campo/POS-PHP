@@ -18,20 +18,34 @@
 
 
 		protected function conectar(){
-			$dsn = "mysql:host={$this->server};port={$this->port};dbname={$this->db}";
-			$options = [
-				PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-			];
-			$conexion = new PDO($dsn, $this->user, $this->pass, $options);
-			$conexion->exec("SET CHARACTER SET utf8");
-			return $conexion;
+			try {
+				$dsn = "mysql:host={$this->server};port={$this->port};dbname={$this->db}";
+				$options = [
+					PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+				];
+				$conexion = new PDO($dsn, $this->user, $this->pass, $options);
+				$conexion->exec("SET CHARACTER SET utf8");
+				return $conexion;
+			} catch (PDOException $e) {
+				error_log("Error de conexion DB: " . $e->getMessage());
+				throw new \Exception("Error al conectar con la base de datos. Por favor, contacte al administrador.");
+			}
 		}
 
 
 		
 		public function ejecutarConsulta($consulta){
 			$sql=$this->conectar()->prepare($consulta);
+			$sql->execute();
+			return $sql;
+		}
+
+		public function consultaSegura($consulta, $parametros = []){
+			$sql=$this->conectar()->prepare($consulta);
+			foreach($parametros as $marcador => $valor){
+				$sql->bindValue($marcador, $valor);
+			}
 			$sql->execute();
 			return $sql;
 		}

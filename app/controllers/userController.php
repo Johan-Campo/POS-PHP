@@ -78,10 +78,10 @@
 		    }
 
 		    
-		    if($email!=""){
-				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
-					if($check_email->rowCount()>0){
+			    if($email!=""){
+					if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+						$check_email=$this->consultaSegura("SELECT usuario_email FROM usuario WHERE usuario_email=:Email", [":Email"=>$email]);
+						if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
 							"titulo"=>"Ocurrió un error inesperado",
@@ -118,7 +118,7 @@
             }
 
             
-		    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
+		    $check_usuario=$this->consultaSegura("SELECT usuario_usuario FROM usuario WHERE usuario_usuario=:Usuario", [":Usuario"=>$usuario]);
 		    if($check_usuario->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -131,7 +131,7 @@
 		    }
 
 		    
-		    $check_caja=$this->ejecutarConsulta("SELECT caja_id FROM caja WHERE caja_id='$caja'");
+		    $check_caja=$this->consultaSegura("SELECT caja_id FROM caja WHERE caja_id=:Caja", [":Caja"=>$caja]);
 		    if($check_caja->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -151,7 +151,7 @@
 
     			
 		        if(!file_exists($img_dir)){
-		            if(!mkdir($img_dir,0777)){
+		            if(!mkdir($img_dir,0755)){
 		            	$alerta=[
 							"tipo"=>"simple",
 							"titulo"=>"Ocurrió un error inesperado",
@@ -201,7 +201,7 @@
 		            break;
 		        }
 
-		        chmod($img_dir,0777);
+		        chmod($img_dir,0755);
 
 		        
 		        if(!move_uploaded_file($_FILES['usuario_foto']['tmp_name'],$img_dir.$foto)){
@@ -270,7 +270,7 @@
 			}else{
 				
 				if(is_file($img_dir.$foto)){
-		            chmod($img_dir.$foto,0777);
+		            chmod($img_dir.$foto,0755);
 		            unlink($img_dir.$foto);
 		        }
 
@@ -302,24 +302,26 @@
 			$pagina = (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio = ($pagina>0) ? (($pagina * $registros)-$registros) : 0;
 
+			$session_id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT * FROM usuario WHERE ((usuario_id!='".$_SESSION['id']."' AND usuario_id!='1') AND (usuario_nombre LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR usuario_usuario LIKE '%$busqueda%')) ORDER BY usuario_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM usuario WHERE ((usuario_id!='".$session_id."' AND usuario_id!='1') AND (usuario_nombre LIKE :Busqueda OR usuario_apellido LIKE :Busqueda OR usuario_email LIKE :Busqueda OR usuario_usuario LIKE :Busqueda)) ORDER BY usuario_nombre ASC LIMIT $inicio,$registros";
+				$datos = $this->consultaSegura($consulta_datos, [":Busqueda"=>"%$busqueda%"]);
 
-				$consulta_total="SELECT COUNT(usuario_id) FROM usuario WHERE ((usuario_id!='".$_SESSION['id']."' AND usuario_id!='1') AND (usuario_nombre LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR usuario_usuario LIKE '%$busqueda%'))";
+				$consulta_total="SELECT COUNT(usuario_id) FROM usuario WHERE ((usuario_id!='".$session_id."' AND usuario_id!='1') AND (usuario_nombre LIKE :Busqueda OR usuario_apellido LIKE :Busqueda OR usuario_email LIKE :Busqueda OR usuario_usuario LIKE :Busqueda))";
+				$total = $this->consultaSegura($consulta_total, [":Busqueda"=>"%$busqueda%"]);
 
 			}else{
 
-				$consulta_datos="SELECT * FROM usuario WHERE usuario_id!='".$_SESSION['id']."' AND usuario_id!='1' ORDER BY usuario_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM usuario WHERE usuario_id!='".$session_id."' AND usuario_id!='1' ORDER BY usuario_nombre ASC LIMIT $inicio,$registros";
+				$datos = $this->ejecutarConsulta($consulta_datos);
 
-				$consulta_total="SELECT COUNT(usuario_id) FROM usuario WHERE usuario_id!='".$_SESSION['id']."' AND usuario_id!='1'";
+				$consulta_total="SELECT COUNT(usuario_id) FROM usuario WHERE usuario_id!='".$session_id."' AND usuario_id!='1'";
+				$total = $this->ejecutarConsulta($consulta_total);
 
 			}
 
-			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
-
-			$total = $this->ejecutarConsulta($consulta_total);
 			$total = (int) $total->fetchColumn();
 
 			$numeroPaginas =ceil($total/$registros);
@@ -429,7 +431,7 @@
 			}
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM usuario WHERE usuario_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -444,7 +446,7 @@
 		    }
 
 		    
-		    $check_ventas=$this->ejecutarConsulta("SELECT usuario_id FROM venta WHERE usuario_id='$id' LIMIT 1");
+		    $check_ventas=$this->consultaSegura("SELECT usuario_id FROM venta WHERE usuario_id=:ID LIMIT 1", [":ID"=>$id]);
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -461,7 +463,7 @@
 		    if($eliminarUsuario->rowCount()==1){
 
 		    	if(is_file("../views/fotos/".$datos['usuario_foto'])){
-		            chmod("../views/fotos/".$datos['usuario_foto'],0777);
+		            chmod("../views/fotos/".$datos['usuario_foto'],0755);
 		            unlink("../views/fotos/".$datos['usuario_foto']);
 		        }
 
@@ -491,7 +493,7 @@
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM usuario WHERE usuario_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -543,7 +545,7 @@
 		    }
 
 		    
-		    $check_admin=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_usuario='$admin_usuario' AND usuario_id='".$_SESSION['id']."'");
+		    $check_admin=$this->consultaSegura("SELECT * FROM usuario WHERE usuario_usuario=:Usuario AND usuario_id=:AdminID", [":Usuario"=>$admin_usuario, ":AdminID"=>($_SESSION['id'] ?? 0)]);
 		    if($check_admin->rowCount()==1){
 
 		    	$check_admin=$check_admin->fetch();
@@ -629,9 +631,9 @@
 		    }
 
 		    
-		    if($email!="" && $datos['usuario_email']!=$email){
-				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
+			    if($email!="" && $datos['usuario_email']!=$email){
+					if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+						$check_email=$this->consultaSegura("SELECT usuario_email FROM usuario WHERE usuario_email=:Email", [":Email"=>$email]);
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
@@ -687,7 +689,7 @@
 
             
             if($datos['usuario_usuario']!=$usuario){
-			    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
+			    $check_usuario=$this->consultaSegura("SELECT usuario_usuario FROM usuario WHERE usuario_usuario=:Usuario", [":Usuario"=>$usuario]);
 			    if($check_usuario->rowCount()>0){
 			        $alerta=[
 						"tipo"=>"simple",
@@ -702,7 +704,7 @@
 
             
             if($datos['caja_id']!=$caja){
-			    $check_caja=$this->ejecutarConsulta("SELECT caja_id FROM caja WHERE caja_id='$caja'");
+			    $check_caja=$this->consultaSegura("SELECT caja_id FROM caja WHERE caja_id=:Caja", [":Caja"=>$caja]);
 			    if($check_caja->rowCount()<=0){
 			        $alerta=[
 						"tipo"=>"simple",
@@ -756,7 +758,7 @@
 
 			if($this->actualizarDatos("usuario",$usuario_datos_up,$condicion)){
 
-				if($id==$_SESSION['id']){
+				if($id==($_SESSION['id'] ?? 0)){
 					$_SESSION['nombre']=$nombre;
 					$_SESSION['apellido']=$apellido;
 					$_SESSION['usuario']=$usuario;
@@ -787,7 +789,7 @@
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM usuario WHERE usuario_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -804,11 +806,11 @@
 		    
     		$img_dir="../views/fotos/";
 
-    		chmod($img_dir,0777);
+    		if(!file_exists($img_dir)){
+    			mkdir($img_dir,0755,true);
+    		}
 
     		if(is_file($img_dir.$datos['usuario_foto'])){
-
-		        chmod($img_dir.$datos['usuario_foto'],0777);
 
 		        if(!unlink($img_dir.$datos['usuario_foto'])){
 		            $alerta=[
@@ -822,12 +824,12 @@
 		        }
 		    }else{
 		    	$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado la foto del usuario en el sistema",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
+						"tipo"=>"simple",
+						"titulo"=>"Ocurrió un error inesperado",
+						"texto"=>"No hemos encontrado la foto del usuario en el sistema",
+						"icono"=>"error"
+					];
+					return json_encode($alerta);
 		        exit();
 		    }
 
@@ -847,7 +849,7 @@
 
 			if($this->actualizarDatos("usuario",$usuario_datos_up,$condicion)){
 
-				if($id==$_SESSION['id']){
+				if($id==($_SESSION['id'] ?? 0)){
 					$_SESSION['foto']="";
 				}
 
@@ -876,7 +878,7 @@
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM usuario WHERE usuario_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -907,7 +909,7 @@
 
     		
 	        if(!file_exists($img_dir)){
-	            if(!mkdir($img_dir,0777)){
+	            if(!mkdir($img_dir,0755)){
 	                $alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -963,7 +965,7 @@
 	            break;
 	        }
 
-	        chmod($img_dir,0777);
+	        chmod($img_dir,0755);
 
 	        
 	        if(!move_uploaded_file($_FILES['usuario_foto']['tmp_name'],$img_dir.$foto)){
@@ -999,7 +1001,7 @@
 
 			if($this->actualizarDatos("usuario",$usuario_datos_up,$condicion)){
 
-				if($id==$_SESSION['id']){
+				if($id==($_SESSION['id'] ?? 0)){
 					$_SESSION['foto']=$foto;
 				}
 

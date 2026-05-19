@@ -60,7 +60,7 @@
 		    }
 
 		    
-		    $check_numero=$this->ejecutarConsulta("SELECT caja_numero FROM caja WHERE caja_numero='$numero'");
+		    $check_numero=$this->consultaSegura("SELECT caja_numero FROM caja WHERE caja_numero=:Numero", [":Numero"=>$numero]);
 		    if($check_numero->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -73,7 +73,7 @@
 		    }
 
 		    
-		    $check_nombre=$this->ejecutarConsulta("SELECT caja_nombre FROM caja WHERE caja_nombre='$nombre'");
+		    $check_nombre=$this->consultaSegura("SELECT caja_nombre FROM caja WHERE caja_nombre=:Nombre", [":Nombre"=>$nombre]);
 		    if($check_nombre->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -156,9 +156,12 @@
 
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT * FROM caja WHERE caja_numero LIKE '%$busqueda%' OR caja_nombre LIKE '%$busqueda%' ORDER BY caja_numero ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM caja WHERE caja_numero LIKE :Busqueda OR caja_nombre LIKE :Busqueda ORDER BY caja_numero ASC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(caja_id) FROM caja WHERE caja_numero LIKE '%$busqueda%' OR caja_nombre LIKE '%$busqueda%'";
+				$consulta_total="SELECT COUNT(caja_id) FROM caja WHERE caja_numero LIKE :Busqueda OR caja_nombre LIKE :Busqueda";
+
+				$datos = $this->consultaSegura($consulta_datos, [":Busqueda"=>"%$busqueda%"]);
+				$total = $this->consultaSegura($consulta_total, [":Busqueda"=>"%$busqueda%"]);
 
 			}else{
 
@@ -166,12 +169,13 @@
 
 				$consulta_total="SELECT COUNT(caja_id) FROM caja";
 
+				$datos = $this->ejecutarConsulta($consulta_datos);
+				$total = $this->ejecutarConsulta($consulta_total);
+
 			}
 
-			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 
-			$total = $this->ejecutarConsulta($consulta_total);
 			$total = (int) $total->fetchColumn();
 
 			$numeroPaginas =ceil($total/$registros);
@@ -273,7 +277,7 @@
 			}
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM caja WHERE caja_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM caja WHERE caja_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -288,7 +292,7 @@
 		    }
 
 		    
-		    $check_ventas=$this->ejecutarConsulta("SELECT caja_id FROM venta WHERE caja_id='$id' LIMIT 1");
+		    $check_ventas=$this->consultaSegura("SELECT caja_id FROM venta WHERE caja_id=:ID LIMIT 1", [":ID"=>$id]);
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -301,7 +305,7 @@
 		    }
 
 		    
-		    $check_usuarios=$this->ejecutarConsulta("SELECT caja_id FROM usuario WHERE caja_id='$id' LIMIT 1");
+		    $check_usuarios=$this->consultaSegura("SELECT caja_id FROM usuario WHERE caja_id=:ID LIMIT 1", [":ID"=>$id]);
 		    if($check_usuarios->rowCount()>0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -341,7 +345,7 @@
 			$id=$this->limpiarCadena($_POST['caja_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM caja WHERE caja_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM caja WHERE caja_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -408,7 +412,7 @@
 
 		    
 		    if($datos['caja_numero']!=$numero){
-			    $check_numero=$this->ejecutarConsulta("SELECT caja_numero FROM caja WHERE caja_numero='$numero'");
+			    $check_numero=$this->consultaSegura("SELECT caja_numero FROM caja WHERE caja_numero=:Numero", [":Numero"=>$numero]);
 			    if($check_numero->rowCount()>0){
 			    	$alerta=[
 						"tipo"=>"simple",
@@ -423,7 +427,7 @@
 
 		    
 		    if($datos['caja_nombre']!=$nombre){
-			    $check_nombre=$this->ejecutarConsulta("SELECT caja_nombre FROM caja WHERE caja_nombre='$nombre'");
+			    $check_nombre=$this->consultaSegura("SELECT caja_nombre FROM caja WHERE caja_nombre=:Nombre", [":Nombre"=>$nombre]);
 			    if($check_nombre->rowCount()>0){
 			    	$alerta=[
 						"tipo"=>"simple",

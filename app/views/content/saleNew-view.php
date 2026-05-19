@@ -1,3 +1,8 @@
+<?php
+    if(!isset($_SESSION['venta_total'])){
+        $_SESSION['venta_total']=0;
+    }
+?>
 <div class="content-wrapper">
 
 <div class="page-header">
@@ -183,7 +188,7 @@
                             $datos_cajas=$insLogin->seleccionarDatos("Normal","caja","*",0);
 
                             while($campos_caja=$datos_cajas->fetch()){
-                                if($campos_caja['caja_id']==$_SESSION['caja']){
+                                if($campos_caja['caja_id']==(isset($_SESSION['caja'])?$_SESSION['caja']:0)){
                                     echo '<option value="'.$campos_caja['caja_id'].'" selected="" >Caja No.'.$campos_caja['caja_numero'].' - '.$campos_caja['caja_nombre'].' (Actual)</option>';
                                 }else{
                                     echo '<option value="'.$campos_caja['caja_id'].'">Caja No.'.$campos_caja['caja_numero'].' - '.$campos_caja['caja_nombre'].'</option>';

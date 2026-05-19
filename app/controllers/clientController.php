@@ -128,7 +128,7 @@
 		    
 		    if($email!=""){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT cliente_email FROM cliente WHERE cliente_email='$email'");
+					$check_email=$this->consultaSegura("SELECT cliente_email FROM cliente WHERE cliente_email=:Email", [":Email"=>$email]);
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
@@ -152,7 +152,7 @@
             }
 
             
-		    $check_documento=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento='$tipo_documento' AND cliente_numero_documento='$numero_documento'");
+		    $check_documento=$this->consultaSegura("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento=:TipoDoc AND cliente_numero_documento=:NumDoc", [":TipoDoc"=>$tipo_documento, ":NumDoc"=>$numero_documento]);
 		    if($check_documento->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -252,9 +252,15 @@
 
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT * FROM cliente WHERE ((cliente_id!='1') AND (cliente_tipo_documento LIKE '%$busqueda%' OR cliente_numero_documento LIKE '%$busqueda%' OR cliente_nombre LIKE '%$busqueda%' OR cliente_apellido LIKE '%$busqueda%' OR cliente_email LIKE '%$busqueda%' OR cliente_provincia LIKE '%$busqueda%' OR cliente_ciudad LIKE '%$busqueda%')) ORDER BY cliente_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM cliente WHERE ((cliente_id!='1') AND (cliente_tipo_documento LIKE :Busqueda OR cliente_numero_documento LIKE :Busqueda OR cliente_nombre LIKE :Busqueda OR cliente_apellido LIKE :Busqueda OR cliente_email LIKE :Busqueda OR cliente_provincia LIKE :Busqueda OR cliente_ciudad LIKE :Busqueda)) ORDER BY cliente_nombre ASC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(cliente_id) FROM cliente WHERE ((cliente_id!='1') AND (cliente_tipo_documento LIKE '%$busqueda%' OR cliente_numero_documento LIKE '%$busqueda%' OR cliente_nombre LIKE '%$busqueda%' OR cliente_apellido LIKE '%$busqueda%' OR cliente_email LIKE '%$busqueda%' OR cliente_provincia LIKE '%$busqueda%' OR cliente_ciudad LIKE '%$busqueda%'))";
+				$consulta_total="SELECT COUNT(cliente_id) FROM cliente WHERE ((cliente_id!='1') AND (cliente_tipo_documento LIKE :Busqueda OR cliente_numero_documento LIKE :Busqueda OR cliente_nombre LIKE :Busqueda OR cliente_apellido LIKE :Busqueda OR cliente_email LIKE :Busqueda OR cliente_provincia LIKE :Busqueda OR cliente_ciudad LIKE :Busqueda))";
+
+				$datos = $this->consultaSegura($consulta_datos, [":Busqueda"=>"%$busqueda%"]);
+				$datos = $datos->fetchAll();
+
+				$total = $this->consultaSegura($consulta_total, [":Busqueda"=>"%$busqueda%"]);
+				$total = (int) $total->fetchColumn();
 
 			}else{
 
@@ -262,13 +268,13 @@
 
 				$consulta_total="SELECT COUNT(cliente_id) FROM cliente WHERE cliente_id!='1'";
 
+				$datos = $this->ejecutarConsulta($consulta_datos);
+				$datos = $datos->fetchAll();
+
+				$total = $this->ejecutarConsulta($consulta_total);
+				$total = (int) $total->fetchColumn();
+
 			}
-
-			$datos = $this->ejecutarConsulta($consulta_datos);
-			$datos = $datos->fetchAll();
-
-			$total = $this->ejecutarConsulta($consulta_total);
-			$total = (int) $total->fetchColumn();
 
 			$numeroPaginas =ceil($total/$registros);
 
@@ -371,7 +377,7 @@
 			}
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM cliente WHERE cliente_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -386,7 +392,7 @@
 		    }
 
 		    
-		    $check_ventas=$this->ejecutarConsulta("SELECT cliente_id FROM venta WHERE cliente_id='$id' LIMIT 1");
+		    $check_ventas=$this->consultaSegura("SELECT cliente_id FROM venta WHERE cliente_id=:ID LIMIT 1", [":ID"=>$id]);
 		    if($check_ventas->rowCount()>0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -428,7 +434,7 @@
 			$id=$this->limpiarCadena($_POST['cliente_id']);
 
 			
-		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+		    $datos=$this->consultaSegura("SELECT * FROM cliente WHERE cliente_id=:ID", [":ID"=>$id]);
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -562,7 +568,7 @@
 			
 		    if($email!="" && $datos['cliente_email']!=$email){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT cliente_email FROM cliente WHERE cliente_email='$email'");
+					$check_email=$this->consultaSegura("SELECT cliente_email FROM cliente WHERE cliente_email=:Email", [":Email"=>$email]);
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
@@ -587,7 +593,7 @@
 
             
             if($tipo_documento!=$datos['cliente_tipo_documento'] || $numero_documento!=$datos['cliente_numero_documento']){
-			    $check_documento=$this->ejecutarConsulta("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento='$tipo_documento' AND cliente_numero_documento='$numero_documento'");
+			    $check_documento=$this->consultaSegura("SELECT cliente_id FROM cliente WHERE cliente_tipo_documento=:TipoDoc AND cliente_numero_documento=:NumDoc", [":TipoDoc"=>$tipo_documento, ":NumDoc"=>$numero_documento]);
 			    if($check_documento->rowCount()>0){
 			    	$alerta=[
 						"tipo"=>"simple",
