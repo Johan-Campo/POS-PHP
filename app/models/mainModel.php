@@ -27,9 +27,9 @@
 				$conexion = new PDO($dsn, $this->user, $this->pass, $options);
 				$conexion->exec("SET CHARACTER SET utf8");
 				return $conexion;
-			} catch (PDOException $e) {
+			} catch (\PDOException $e) {
 				error_log("Error de conexion DB: " . $e->getMessage());
-				throw new \Exception("Error al conectar con la base de datos. Por favor, contacte al administrador.");
+				throw new \Exception("db_connection_error");
 			}
 		}
 

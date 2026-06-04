@@ -242,6 +242,32 @@ html, body {
 }
 .login-eye-btn:hover { color: #A5B4FC; }
 
+.login-db-error {
+    background: rgba(234,179,8,.08);
+    border: 1px solid rgba(234,179,8,.3);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.login-db-error-icon {
+    font-size: 28px;
+    color: #FDE047;
+    margin-bottom: 8px;
+}
+.login-db-error-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #FEF08A;
+    margin-bottom: 8px;
+}
+.login-db-error-body {
+    font-size: 12.5px;
+    color: #FDE68A;
+    line-height: 1.6;
+}
+.login-db-error-body strong { color: #FEF9C3; }
+
 .login-error {
     background: rgba(239,68,68,.15);
     border: 1px solid rgba(239,68,68,.3);

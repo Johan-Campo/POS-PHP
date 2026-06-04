@@ -22,12 +22,26 @@
                 try {
                     $insLogin->iniciarSesionControlador();
                 } catch (Exception $e) {
-                    echo '<article class="message is-danger">
+                    if($e->getMessage() === 'db_connection_error'){ ?>
+                    <div class="login-db-error">
+                        <div class="login-db-error-icon"><i class="ri-database-2-line"></i></div>
+                        <p class="login-db-error-title">Servicio temporalmente no disponible</p>
+                        <p class="login-db-error-body">
+                            El servidor de base de datos se encuentra en estado de suspensión automática
+                            debido a un periodo de inactividad. Este comportamiento es propio del plan
+                            gratuito del proveedor de infraestructura.<br><br>
+                            Por favor, <strong>espere unos minutos</strong> e intente nuevamente.
+                            Si el problema persiste, contacte al administrador del sistema.
+                        </p>
+                    </div>
+                    <?php } else { ?>
+                    <article class="message is-danger">
                       <div class="message-body">
                         <strong>Ocurrió un error inesperado</strong><br>
-                        '.$e->getMessage().'
+                        Por favor, intente nuevamente o contacte al administrador.
                       </div>
-                    </article>';
+                    </article>
+                    <?php }
                 }
             }
         ?>
